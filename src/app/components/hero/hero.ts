@@ -27,6 +27,7 @@ export class Hero implements OnDestroy {
   @ViewChildren('wordEl') wordElRefs!: QueryList<ElementRef<HTMLElement>>;
 
   private mouseMoveHandler!: (e: MouseEvent) => void;
+  private mouseLeaveHandler!: () => void;
   private readonly zone = inject(NgZone);
 
   constructor() {
@@ -71,12 +72,14 @@ export class Hero implements OnDestroy {
       });
     };
 
-    section.addEventListener('mousemove', this.mouseMoveHandler);
-    section.addEventListener('mouseleave', () => {
+    this.mouseLeaveHandler = () => {
       this.wordElRefs.forEach(ref =>
         gsap.to(ref.nativeElement, { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, 0.4)' })
       );
-    });
+    };
+
+    section.addEventListener('mousemove', this.mouseMoveHandler);
+    section.addEventListener('mouseleave', this.mouseLeaveHandler);
   }
 
   onCtaClick(type: 'primary' | 'secondary'): void {
@@ -85,5 +88,6 @@ export class Hero implements OnDestroy {
 
   ngOnDestroy(): void {
     this.sectionRef?.nativeElement?.removeEventListener('mousemove', this.mouseMoveHandler);
+    this.sectionRef?.nativeElement?.removeEventListener('mouseleave', this.mouseLeaveHandler);
   }
 }

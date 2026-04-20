@@ -55,7 +55,7 @@
   font-weight: 900;
   line-height: 0.9;
   letter-spacing: -0.04em;
-  color: var(--color-text);
+  color: var(--color-text-primary);
   will-change: transform;
   opacity: 0; // set by GSAP
 }
@@ -86,7 +86,7 @@
 
 .hero-tagline {
   font-size: var(--text-base);
-  color: var(--color-text-muted);
+  color: var(--color-text-tertiary);
   margin: 0 0 var(--space-6);
   letter-spacing: 0.02em;
 }
@@ -110,7 +110,7 @@
 
 .hero-scroll-label {
   font-size: var(--text-xs);
-  color: var(--color-text-muted);
+  color: var(--color-text-tertiary);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
