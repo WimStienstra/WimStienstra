@@ -1,0 +1,25 @@
+.section-header {
+  margin-bottom: var(--space-12);
+
+  &--center {
+    text-align: center;
+
+    p {
+      margin-inline: auto;
+    }
+  }
+
+  .text-eyebrow {
+    margin-bottom: var(--space-3);
+  }
+
+  h2 {
+    margin-bottom: var(--space-4);
+  }
+
+  &__desc {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+  }
+}

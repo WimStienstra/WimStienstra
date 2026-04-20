@@ -1,0 +1,70 @@
+// =============================================================================
+// TAGS — Organic pill-shaped badges with warm-tinted backgrounds
+// =============================================================================
+
+// Shared base
+%tag-base {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: all var(--duration-fast) var(--ease-out-expo);
+}
+
+// Sage — primary accent (calm, nature)
+.tag-sage {
+  @extend %tag-base;
+  background-color: rgba(138, 154, 141, 0.18);
+  color: var(--color-sage-dark);
+  border-color: rgba(138, 154, 141, 0.35);
+
+  &:hover {
+    background-color: rgba(138, 154, 141, 0.28);
+  }
+}
+
+// Caramel — warmth, secondary
+.tag-caramel {
+  @extend %tag-base;
+  background-color: rgba(193, 154, 107, 0.18);
+  color: var(--color-caramel-dark);
+  border-color: rgba(193, 154, 107, 0.35);
+
+  &:hover {
+    background-color: rgba(193, 154, 107, 0.28);
+  }
+}
+
+// Oker — highlight, energy
+.tag-oker {
+  @extend %tag-base;
+  background-color: rgba(212, 165, 74, 0.18);
+  color: var(--color-oker-dark);
+  border-color: rgba(212, 165, 74, 0.35);
+
+  &:hover {
+    background-color: rgba(212, 165, 74, 0.28);
+  }
+}
+
+// Navy — subtle, informational
+.tag-navy {
+  @extend %tag-base;
+  background-color: rgba(45, 62, 80, 0.1);
+  color: var(--color-navy);
+  border-color: rgba(45, 62, 80, 0.2);
+}
+
+// Sunset — glow, featured
+.tag-sunset {
+  @extend %tag-base;
+  background-color: rgba(255, 140, 66, 0.15);
+  color: #b85c1a;
+  border-color: rgba(255, 140, 66, 0.35);
+}

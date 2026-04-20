@@ -1,0 +1,4 @@
+<button [class]="'btn-' + variant()" [type]="type()" [disabled]="disabled()" [attr.aria-disabled]="disabled() || null"
+  (click)="handleClick()">
+  {{ label() }}
+</button>

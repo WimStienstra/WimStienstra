@@ -1,0 +1,146 @@
+// =============================================================================
+// DESIGN TOKENS — Biomorphic Glassmorphism × Mid-Century Modern × Warm Earth
+// Source of truth for all CSS custom properties. Never hardcode values.
+// =============================================================================
+
+:root {
+  // ---------------------------------------------------------------------------
+  // COLOR — Foundations (Light, Airy, Warm)
+  // ---------------------------------------------------------------------------
+  --color-bg-canvas: #f8f4ef;
+  --color-bg-surface: #fdfbf7;
+  --color-bg-surface-warm: #f0ebe3;
+  --color-bg-overlay: rgba(45, 42, 38, 0.85);
+
+  // Primary Palette — From Wim's Home
+  --color-caramel: #c19a6b;
+  --color-caramel-light: #d4b896;
+  --color-caramel-dark: #9d7a52;
+
+  --color-sage: #8a9a8d;
+  --color-sage-light: #b3c2b8;
+  --color-sage-dark: #5f6d5f;
+
+  --color-oker: #d4a54a;
+  --color-oker-light: #e8c87e;
+  --color-oker-dark: #a6843b;
+
+  --color-navy: #2d3e50;
+  --color-navy-light: #4a5f7a;
+  --color-navy-dark: #1e2a38;
+
+  // Evening Glow Accents — From Wim's Lighting Setup
+  --color-sunset: #ff8c42;
+  --color-amber: #ffb366;
+  --color-ember: #ff6b42;
+
+  // Accent Hierarchy
+  --color-accent-primary: var(--color-sage);
+  --color-accent-secondary: var(--color-caramel);
+  --color-accent-highlight: var(--color-oker);
+  --color-accent-glow: var(--color-sunset);
+
+  // Text Hierarchy (Dark on Light)
+  --color-text-primary: #2d2a26;
+  --color-text-secondary: #5f5a52;
+  --color-text-tertiary: #8a8579;
+  --color-text-on-dark: #f8f4ef;
+
+  // Semantic
+  --color-success: #6b9e78;
+  --color-warning: var(--color-oker);
+  --color-error: #c76a5e;
+  --color-info: var(--color-navy-light);
+
+  // ---------------------------------------------------------------------------
+  // GLASSMORPHISM
+  // ---------------------------------------------------------------------------
+  --glass-light: rgba(253, 251, 247, 0.7);
+  --glass-warm: rgba(193, 154, 107, 0.15);
+  --glass-sage: rgba(138, 154, 141, 0.2);
+  --glass-glow: rgba(255, 140, 66, 0.12);
+  --glass-blur: 12px;
+
+  --border-warm: rgba(193, 154, 107, 0.2);
+  --border-sage: rgba(138, 154, 141, 0.25);
+  --border-glow: rgba(255, 140, 66, 0.3);
+  --border-subtle: rgba(93, 90, 82, 0.1);
+
+  // ---------------------------------------------------------------------------
+  // SHADOWS — Soft, Diffused, Organic
+  // ---------------------------------------------------------------------------
+  --shadow-soft: 0 2px 12px rgba(45, 42, 38, 0.06);
+  --shadow-medium: 0 4px 20px rgba(45, 42, 38, 0.08);
+  --shadow-elevated: 0 8px 32px rgba(45, 42, 38, 0.12);
+  --shadow-ambient: 0 12px 48px rgba(45, 42, 38, 0.15);
+  --shadow-glow-soft: 0 8px 24px rgba(255, 140, 66, 0.25);
+  --shadow-glow-medium: 0 12px 32px rgba(255, 140, 66, 0.3);
+  --shadow-glow-ambient: 0 0 48px rgba(255, 140, 66, 0.15);
+
+  // ---------------------------------------------------------------------------
+  // TYPOGRAPHY — Fluid Scale
+  // ---------------------------------------------------------------------------
+  --font-display: 'DM Sans', 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --text-xs: clamp(0.7rem, 1.5vw, 0.75rem);
+  --text-sm: clamp(0.85rem, 2vw, 0.9rem);
+  --text-base: clamp(1rem, 2.5vw, 1.05rem);
+  --text-lg: clamp(1.15rem, 3vw, 1.25rem);
+  --text-xl: clamp(1.4rem, 4vw, 1.75rem);
+  --text-2xl: clamp(2rem, 5vw, 2.75rem);
+  --text-3xl: clamp(2.8rem, 7vw, 4.5rem);
+  --text-hero: clamp(3.5rem, 9vw, 7rem);
+
+  --leading-tight: 1.15;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.05em;
+
+  // ---------------------------------------------------------------------------
+  // SPACING — 8px Base Scale
+  // ---------------------------------------------------------------------------
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  // ---------------------------------------------------------------------------
+  // BORDER RADIUS — Biomorphic
+  // ---------------------------------------------------------------------------
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-blob: 64% 36% 47% 53% / 53% 39% 61% 47%;
+  --radius-pill: 9999px;
+
+  // ---------------------------------------------------------------------------
+  // LAYOUT
+  // ---------------------------------------------------------------------------
+  --max-width: 1200px;
+  --max-width-text: 65ch;
+
+  // ---------------------------------------------------------------------------
+  // ANIMATION — Organic Easing
+  // ---------------------------------------------------------------------------
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-organic: cubic-bezier(0.33, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-instant: 100ms;
+  --duration-fast: 200ms;
+  --duration-base: 400ms;
+  --duration-slow: 600ms;
+  --duration-morph: 1200ms;
+}

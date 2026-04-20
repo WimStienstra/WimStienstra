@@ -1,0 +1,14 @@
+.glass-card-host {
+  display: block;
+}
+
+.glass-card-inner {
+  height: 100%;
+  transition:
+    transform var(--duration-base) var(--ease-out-expo),
+    box-shadow var(--duration-base) var(--ease-out-expo);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}

@@ -4,10 +4,12 @@
 
 <!-- What does this PR do in 1–3 sentences? -->
 
-## Phase Scope
+## Plan Section
 
-* Phase: **Phase 0** / Phase 1 / Phase 2 (circle one)
-* This PR is strictly within the scope of the current phase:
+<!-- Which plan step(s) does this PR implement? e.g. "plan/04-hero-section.md" -->
+
+* Plan file(s): `plan/`
+* This PR stays within the scope of the referenced plan step(s):
 
   * [ ] Yes
   * [ ] No (explain why below)
@@ -16,79 +18,52 @@ If **No**, explain:
 
 ## Problem Statement
 
-<!-- What problem does this PR solve? Link to scenario if applicable -->
+<!-- What problem does this PR solve, or what section/feature does it add? -->
 
 ## Solution Overview
 
-<!-- High-level explanation of how the problem is solved -->
-
-## User Scenario Coverage
-
-This PR supports the following documented scenarios:
-
-* [ ] Scenario 1: Log weekly hours
-* [ ] Scenario 2: Manager approval flow
-* [ ] Scenario 3: Export to Exact-compatible CSV
-
-(Reference: `docs/phase-0-scenarios.md`)
+<!-- High-level explanation of what was built or changed -->
 
 ## Definition of Done Checklist
 
-* [ ] Feature matches Phase definition of done
+* [ ] Matches the plan step's definition of done
 * [ ] No out-of-scope features added
 * [ ] No unused abstractions or premature extensibility
-* [ ] All data writes are transactional
-* [ ] No data loss possible on refresh/network failure
-* [ ] AuditLog entries are written where required
+* [ ] Component uses `ChangeDetectionStrategy.OnPush`
+* [ ] Standalone component (no NgModule)
+* [ ] Uses `input()` / `output()` signal functions, not decorators
 
-## Data & API Impact
+## Content Changes
 
-* Prisma schema changed:
-
-  * [ ] No
-  * [ ] Yes (describe below)
-
-* API contract changed:
+* JSON content files changed (`src/content/`):
 
   * [ ] No
-  * [ ] Yes (update `phase-0-api.md`)
+  * [ ] Yes (list files below)
 
 Details:
 
-## Security & Compliance
+## Accessibility
 
-* [ ] Tenant isolation preserved
-* [ ] Authorization checks present
-* [ ] No sensitive data logged
-* [ ] GDPR: data can be exported and soft-deleted
+* [ ] Semantic HTML used (landmarks, headings, lists)
+* [ ] All interactive elements are keyboard accessible
+* [ ] Images have appropriate `alt` text
+* [ ] Color contrast meets WCAG 2.2 AA
 
-## UX & Performance
+## Performance & Styling
 
-* Time entry speed tested (< 60 seconds per week):
-
-  * [ ] Yes
-  * [ ] Not applicable
-
-* Works on:
-
-  * [ ] Desktop
-  * [ ] Mobile (responsive or PWA)
+* [ ] No inline styles — Tailwind classes or SCSS used
+* [ ] No magic numbers — design tokens from `_tokens.scss` used where applicable
+* [ ] Animations respect `prefers-reduced-motion`
 
 ## Testing
 
-* [ ] Unit tests added or updated
-* [ ] Manual testing performed
-* [ ] Edge cases considered (duplicates, partial submits, retries)
+* [ ] Manually tested in browser
+* [ ] Responsive layout checked (mobile + desktop)
+* [ ] No console errors or warnings
 
-Describe testing performed:
+## Screenshots (if UI)
 
-## Screenshots / Recordings (if UI)
-
-<!-- Optional but encouraged -->
-
-## Rollback Plan
-
-<!-- How can this change be safely reverted if needed? -->
+<!-- Paste a before/after screenshot or recording here -->
 
 ## Reviewer Notes
 
@@ -98,6 +73,6 @@ Describe testing performed:
 
 ### Final Check (Required)
 
-* [ ] I have read `COPILOT_INSTRUCTIONS.md`
-* [ ] This PR aligns with the current phase constraints
-* [ ] This PR does not introduce future-phase concepts
+* [ ] Follows Angular coding standards in `AGENTS.md`
+* [ ] No hardcoded content that should live in `src/content/`
+* [ ] Conventional commit message used on all commits

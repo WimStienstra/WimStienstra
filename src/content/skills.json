@@ -1,0 +1,116 @@
+{
+  "core": {
+    "imageUrl": "/assets/skills/angular-stack.png",
+    "items": [
+      {
+        "name": "Angular",
+        "level": 5
+      },
+      {
+        "name": "TypeScript",
+        "level": 5
+      },
+      {
+        "name": "NX Monorepo",
+        "level": 5
+      },
+      {
+        "name": "RxJS",
+        "level": 4
+      }
+    ]
+  },
+  "testing": {
+    "imageUrl": "",
+    "items": [
+      {
+        "name": "Playwright",
+        "level": 5
+      },
+      {
+        "name": "Jest",
+        "level": 4
+      },
+      {
+        "name": "Cypress",
+        "level": 3
+      }
+    ]
+  },
+  "ecosystem": {
+    "imageUrl": "",
+    "items": [
+      {
+        "name": "React.js",
+        "level": 3
+      },
+      {
+        "name": "Node.js",
+        "level": 3
+      },
+      {
+        "name": "GraphQL",
+        "level": 3
+      },
+      {
+        "name": "Spring Boot / Java",
+        "level": 2
+      }
+    ]
+  },
+  "tooling": {
+    "imageUrl": "",
+    "items": [
+      {
+        "name": "Git",
+        "level": 5
+      },
+      {
+        "name": "GitHub Actions / CI-CD",
+        "level": 4
+      },
+      {
+        "name": "Docker",
+        "level": 3
+      }
+    ]
+  },
+  "ai": {
+    "imageUrl": "/assets/skills/ai-tools.png",
+    "items": [
+      {
+        "name": "AI-Assisted Coding",
+        "level": 5
+      },
+      {
+        "name": "Structured Prompting",
+        "level": 4
+      },
+      {
+        "name": "MCP / Agent Workflows",
+        "level": 4
+      },
+      {
+        "name": "Google Dialogflow",
+        "level": 3
+      }
+    ]
+  },
+  "soft": {
+    "imageUrl": "",
+    "items": [
+      {
+        "name": "Scrum / PSM I",
+        "level": 5
+      },
+      {
+        "name": "UX Thinking",
+        "level": 4
+      },
+      {
+        "name": "Technical Documentation",
+        "level": 4
+      }
+    ]
+  }
+}

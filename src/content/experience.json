@@ -1,0 +1,103 @@
+[
+  {
+    "id": "cjib-frontend",
+    "company": "Centraal Justitieel Incassobureau (CJIB)",
+    "role": "Frontend Web Developer",
+    "period": "Sep 2025 – Present",
+    "location": "Leeuwarden, Netherlands",
+    "tags": [
+      "Angular",
+      "Monorepo",
+      "TypeScript"
+    ],
+    "imageUrl": "/assets/experience/cjib.jpg",
+    "description": "Joined an innovative frontend team building EXPO — an Angular-based monorepo platform within the Enforcement domain that brings multiple applications together into a single web application. The team operates at the cutting edge of CJIB technology, introducing new tools and practices with a forward-thinking engineering approach."
+  },
+  {
+    "id": "cjib-fullstack",
+    "company": "Centraal Justitieel Incassobureau (CJIB)",
+    "role": "Full Stack Developer",
+    "period": "Sep 2024 – Sep 2025",
+    "location": "Leeuwarden, Netherlands",
+    "tags": [
+      "Angular",
+      "NX",
+      "Playwright",
+      "Jest",
+      "Java"
+    ],
+    "imageUrl": "",
+    "description": "Modernised the frontend of team Zalm's case-processing application: upgraded Angular 14 → 20, migrated to NX monorepo, redesigned multiple screens, replaced Cucumber → Playwright for E2E and Karma → Jest for unit tests. Backend work included Java microservice maintenance and model improvements."
+  },
+  {
+    "id": "cjib-intern",
+    "company": "Centraal Justitieel Incassobureau (CJIB)",
+    "role": "Graduate Intern — Frontend Developer",
+    "period": "Feb 2024 – Sep 2024",
+    "location": "Leeuwarden, Netherlands",
+    "tags": [
+      "Angular",
+      "NX",
+      "Domain-Driven Design",
+      "Monorepo"
+    ],
+    "imageUrl": "",
+    "description": "Re-architected the Digitaal Loket Verkeer for the Openbaar Ministerie. Chose an NX monorepo with domain-driven design to support future OM applications. Delivered a proof of concept with redesigned pages, enthusiastically received by the continuation team."
+  },
+  {
+    "id": "chipsoft",
+    "company": "ChipSoft",
+    "role": "Intern Frontend Developer",
+    "period": "Feb 2023 – Jul 2023",
+    "location": "Netherlands",
+    "tags": [
+      "C# .NET",
+      "Healthcare IT",
+      "UX Research"
+    ],
+    "imageUrl": "",
+    "description": "Designed and built a new management page inside the consult module of HiX (a comprehensive healthcare information system). Conducted user research with consultants and a physician. Used ChipSoft's in-house .NET 6.0 framework."
+  },
+  {
+    "id": "jip",
+    "company": "JIP B.V.",
+    "role": "Junior Developer",
+    "period": "Aug 2019 – Aug 2020",
+    "location": "Netherlands",
+    "tags": [
+      "Google Dialogflow",
+      "Google Assistant",
+      "Bot-Human Hybrid",
+      ".NET Core"
+    ],
+    "imageUrl": "/assets/experience/jip-snel.jpg",
+    "description": "Updated internal apps to .NET Core and led a side project building 'Jip Snel' — a hybrid AI chatbot using Google Dialogflow and Google Assistant, with a human operator takeover system via a third-party frontend."
+  },
+  {
+    "id": "imagineers",
+    "company": "The Imagineers Holland",
+    "role": "Intern Frontend Developer",
+    "period": "Feb 2019 – Jul 2019",
+    "location": "Netherlands",
+    "tags": [
+      "React.js",
+      "GraphQL"
+    ],
+    "imageUrl": "",
+    "description": "Built the 'Dreamcatcher' proof-of-concept module for SEP 2.0 — a platform where residents can share opinions about local changes. Developed with React.js and GraphQL."
+  },
+  {
+    "id": "comecer",
+    "company": "Comecer",
+    "role": "Intern Full Stack Developer",
+    "period": "Sep 2017 – Feb 2018",
+    "location": "Netherlands",
+    "tags": [
+      "Angular",
+      "Node.js",
+      "Firebird"
+    ],
+    "imageUrl": "",
+    "description": "Created the 'IBC Dashboard' from scratch — a real-time overview of Comecer's data systems. Independently chose Angular for the frontend and Node.js for the backend, connecting to the existing Firebird database."
+  }
+]

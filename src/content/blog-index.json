@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "custom-drone-follow-me-system",
+    "title": "Building a Custom Follow-Me System for My Drone",
+    "date": "2025-03-15",
+    "excerpt": "How I built a DIY follow-me tracking system for my drone using a Raspberry Pi, GPS module, and some creative engineering.",
+    "tags": [
+      "Drone",
+      "Raspberry Pi",
+      "DIY",
+      "Engineering"
+    ],
+    "imageUrl": "/assets/blog/drone-follow-me.jpg",
+    "readTime": 8
+  },
+  {
+    "slug": "experimenting-with-ai-code-assistants",
+    "title": "Experimenting with AI Code Assistants in Production",
+    "date": "2025-01-22",
+    "excerpt": "A developer's honest take on integrating AI coding tools into a real Angular monorepo — what works, what doesn't, and what surprised me.",
+    "tags": [
+      "AI",
+      "Angular",
+      "Productivity",
+      "Developer Experience"
+    ],
+    "imageUrl": "/assets/blog/ai-code-assistants.jpg",
+    "readTime": 6
+  },
+  {
+    "slug": "first-home-automation-setup",
+    "title": "My First Home Automation Setup with Home Assistant",
+    "date": "2024-11-10",
+    "excerpt": "Getting started with Home Assistant, Zigbee devices, and turning my apartment into a smart home — a weekend project that got slightly out of hand.",
+    "tags": [
+      "Home Automation",
+      "Home Assistant",
+      "IoT",
+      "Weekend Project"
+    ],
+    "imageUrl": "/assets/blog/home-assistant.jpg",
+    "readTime": 5
+  }
+]
