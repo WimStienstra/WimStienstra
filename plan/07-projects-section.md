@@ -1,7 +1,7 @@
 # Step 07 — Projects Section
 
 ## Objective
-Build a visually bold projects showcase as an Angular 19 standalone component that reads from `src/content/projects.json`. Featured projects get large cards with hover effects; non-featured ones appear in a compact grid below. Optional images display on cards that have them.
+Build a visually bold projects showcase as an Angular 21 standalone component that reads from `src/content/projects.json`. Featured projects get large cards with hover effects; non-featured ones appear in a compact grid below. Optional images display on cards that have them.
 
 ---
 

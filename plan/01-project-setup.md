@@ -1,7 +1,7 @@
 # Step 01 — Project Setup
 
 ## Objective
-Scaffold a fresh Angular 19 application inside the existing `WimStienstra/WimStienstra` repository using the Angular CLI, install all dependencies (including Pretext, GSAP, and Boneyard), and verify the dev server and build work.
+Scaffold a fresh Angular 21 application inside the existing `WimStienstra/WimStienstra` repository using the Angular CLI, install all dependencies (including Pretext, GSAP, and Boneyard), and verify the dev server and build work.
 
 ---
 

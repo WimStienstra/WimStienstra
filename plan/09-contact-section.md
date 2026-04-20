@@ -1,7 +1,7 @@
 # Step 09 — Contact Section
 
 ## Objective
-Build the final section of the page as an Angular 19 standalone component: a contact block that feels like the natural end of a journey, inviting recruiters to reach out with clear links to LinkedIn, email, and GitHub.
+Build the final section of the page as an Angular 21 standalone component: a contact block that feels like the natural end of a journey, inviting recruiters to reach out with clear links to LinkedIn, email, and GitHub.
 
 ---
 
@@ -10,7 +10,7 @@ Build the final section of the page as an Angular 19 standalone component: a con
 ```
 ┌──────────────────────────────────────────────┐
 │                                              │
-│   05 / CONTACT                               │
+│   07 / CONTACT                               │
 │                                              │
 │   Let's build something                      │
 │   together.                                  │

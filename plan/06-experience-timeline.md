@@ -1,7 +1,7 @@
 # Step 06 — Experience Timeline
 
 ## Objective
-Build an interactive, animated experience timeline as an Angular 19 standalone component that reads from `src/content/experience.json`. Each entry can display an optional image. A Boneyard skeleton is shown while content loads.
+Build an interactive, animated experience timeline as an Angular 21 standalone component that reads from `src/content/experience.json`. Each entry can display an optional image. A Boneyard skeleton is shown while content loads.
 
 ---
 

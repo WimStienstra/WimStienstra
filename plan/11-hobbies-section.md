@@ -1,14 +1,14 @@
 # Step 11 — Hobbies Section
 
 ## Objective
-Build a visually engaging Hobbies section as an Angular 19 standalone component that reads from `src/content/hobbies.json`. The section showcases Wim's personality beyond code: game modding (RimWorld, Blade & Sorcery), drone flying and videography, music production, and indie game development. A Boneyard skeleton is shown while content loads. Media items open in a lightbox on click.
+Build a visually engaging Hobbies section as an Angular 21 standalone component that reads from `src/content/hobbies.json`. The section showcases Wim's personality beyond code: game modding (RimWorld, Blade & Sorcery), drone flying and videography, music production, and indie game development. A Boneyard skeleton is shown while content loads. Media items open in a lightbox on click.
 
 ---
 
 ## Visual Design
 
 ```
-05 / HOBBIES   (contact becomes 06)
+05 / HOBBIES   (blog is 06, contact becomes 07)
 
   [ 🎮 Game Modding ]  [ 🚁 Drone ]  [ 🎵 Music ]  [ 👾 Game Dev ]
        ↑ tab filter

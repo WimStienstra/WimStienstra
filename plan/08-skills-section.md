@@ -1,7 +1,7 @@
 # Step 08 — Skills Section
 
 ## Objective
-Build a skills visualization as an Angular 19 standalone component that reads from the updated `src/content/skills.json` (which now uses the `{ imageUrl, items }` object structure per category). An optional category image displays alongside the skill rows. A Boneyard skeleton is shown while content loads.
+Build a skills visualization as an Angular 21 standalone component that reads from the updated `src/content/skills.json` (which now uses the `{ imageUrl, items }` object structure per category). An optional category image displays alongside the skill rows. A Boneyard skeleton is shown while content loads.
 
 ---
 

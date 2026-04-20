@@ -1,221 +1,269 @@
 # Step 03 — Design System
 
-## Objective
-Establish the visual identity of the site: color palette, typography, spacing scale, animation utilities, and global SCSS. Every component will consume these tokens — no hardcoded colors or sizes anywhere.
+## Overview
+
+This project uses a comprehensive **Biomorphic Glassmorphism** design language that reflects Wim's personal aesthetic — warm earth tones from his home environment (caramel, sage, oker, navy), organic shapes, mid-century modern precision, and fluid animations.
+
+> **📋 Full Design Specification:** See [`DESIGN.md`](../DESIGN.md) in the project root for the complete design language documentation.
 
 ---
 
-## Color Palette
+## Quick Reference
+
+### Design Philosophy
+- **Organic Warmth:** Biomorphic shapes, warm earth palette, natural materials
+- **Functional Sophistication:** Mid-century modern precision, accessible luxury (WCAG 2.2 AA)
+- **Performant Fluidity:** GPU-accelerated animations, 60fps, respects `prefers-reduced-motion`
+
+**Core Aesthetic:** "What if a smart home dashboard had the warmth of a mid-century living room bathed in evening sunset light?"
+
+---
+
+## Color Palette Summary
 
 ```scss
-// src/styles/_tokens.scss
-:root {
-  // Backgrounds
-  --color-bg:          #080d1a;   // deep navy — page background
-  --color-surface:     #0f1729;   // slightly lighter — card backgrounds
-  --color-surface-2:   #162036;   // hover states, raised surfaces
+// Foundations (Light, Airy, Warm)
+--color-bg-canvas:       #f8f4ef    // Warm off-white/bone (main background)
+--color-bg-surface:      #fdfbf7    // Lightest surface (elevated cards)
 
-  // Accent
-  --color-accent:      #4af0c8;   // electric cyan-green — primary CTA, highlights
-  --color-accent-dim:  #1a9e85;   // muted accent for secondary elements
-  --color-accent-glow: rgba(74, 240, 200, 0.15); // glow overlay
+// Primary Palette (From Wim's Home)
+--color-sage:            #8a9a8d    // Primary accent (office wall, nature)
+--color-caramel:         #c19a6b    // Secondary accent (furniture, warmth)
+--color-oker:            #d4a54a    // Highlight accent (plants, energy)
+--color-navy:            #2d3e50    // Text, icons (grounding sophistication)
 
-  // Text
-  --color-text:        #e8eaf0;   // primary text
-  --color-text-muted:  #7a8099;   // secondary / labels
-  --color-text-faint:  #3d4462;   // very subtle, decorative
+// Evening Glow Accents (From Warm Lighting Setup)
+--color-sunset:          #ff8c42    // Warm orange (sunset lamp, ceiling LED)
+--color-amber:           #ffb366    // Peachy glow (FADO globe, pendants)
+--color-ember:           #ff6b42    // Deep red-orange (RGB ambient ceiling)
 
-  // Borders / Glass
-  --color-border:      rgba(74, 240, 200, 0.12);
-  --color-glass:       rgba(15, 23, 41, 0.6);
+// Glassmorphism (Warm Tinted)
+--glass-warm:            rgba(193, 154, 107, 0.15)  // Caramel-tinted glass
+--glass-sage:            rgba(138, 154, 141, 0.2)   // Sage-tinted glass
+--glass-glow:            rgba(255, 140, 66, 0.12)   // Sunset-tinted glass (ambient)
+--glass-blur:            12px                       // Backdrop blur
+```
 
-  // Status / Tags
-  --color-tag-bg:      rgba(74, 240, 200, 0.08);
-  --color-tag-text:    #4af0c8;
-}
+**Rationale:** Light background reflects Wim's bright, airy home. Warm earth tones create inviting tech. Evening glow accents (sunset, amber, ember) capture the cozy warmth of Wim's evening lighting setup — sunset lamp ceiling LED, FADO ribbed globe lamp, VARMBLIXT donut lamp, and RGB sofa lights set to warm orange tones. No cold blues or dark themes.
+
+---
+
+## Typography Summary
+
+**Font Stack:**
+- **Display:** DM Sans 700-800 / Outfit 700 (rounded, warm)
+- **Headlines:** Inter 600-700 (clean, accessible)
+- **Body:** Inter 400-500 (readable, WCAG compliant)
+- **Code:** JetBrains Mono 400 (developer credibility)
+
+```scss
+// Fluid Scale (Mobile → Desktop)
+--text-hero: clamp(3.5rem, 9vw, 7rem);      // Hero kinetic text
+--text-3xl:  clamp(2.8rem, 7vw, 4.5rem);    // Major headings
+--text-2xl:  clamp(2rem, 5vw, 2.75rem);     // Section headers
+--text-base: clamp(1rem, 2.5vw, 1.05rem);   // Body text
 ```
 
 ---
 
-## Typography
-
-**Fonts to load** (add `<link>` tags in `index.html` for Google Fonts, or self-host):
-- **Inter** — body text, headings
-- **JetBrains Mono** — code labels, section numbers, tech tags
+## Spacing & Layout Summary
 
 ```scss
-// src/styles/_typography.scss
-:root {
-  --font-body:  'Inter', system-ui, sans-serif;
-  --font-mono:  'JetBrains Mono', 'Fira Code', monospace;
+// 8px Base Scale
+--space-2:   0.5rem;     // 8px   — button padding
+--space-4:   1rem;       // 16px  — standard spacing
+--space-6:   1.5rem;     // 24px  — card padding
+--space-24:  6rem;       // 96px  — section vertical spacing
+--space-32:  8rem;       // 128px — hero spacing
 
-  // Fluid scale with clamp
-  --text-xs:   clamp(0.7rem,  1.5vw, 0.75rem);
-  --text-sm:   clamp(0.85rem, 2vw,   0.9rem);
-  --text-base: clamp(1rem,    2.5vw, 1.05rem);
-  --text-lg:   clamp(1.15rem, 3vw,   1.25rem);
-  --text-xl:   clamp(1.4rem,  4vw,   1.75rem);
-  --text-2xl:  clamp(2rem,    5vw,   2.75rem);
-  --text-3xl:  clamp(2.8rem,  7vw,   4.5rem);
-  --text-hero: clamp(3.5rem,  9vw,   7rem);
-}
+// Biomorphic Border Radius
+--radius-md:   16px;     // Cards, buttons
+--radius-lg:   24px;     // Large cards
+--radius-blob: 64% 36% 47% 53% / 53% 39% 61% 47%;  // Organic blobs
+--radius-pill: 9999px;   // Fully rounded pills
+
+// Layout Constraints
+--max-width:        1200px;  // Main content container
+--max-width-text:   65ch;    // Readable line length
 ```
 
 ---
 
-## Spacing & Layout
+## Animation Tokens Summary
 
 ```scss
-// Add to _tokens.scss
-:root {
-  --space-1:   0.25rem;
-  --space-2:   0.5rem;
-  --space-3:   0.75rem;
-  --space-4:   1rem;
-  --space-6:   1.5rem;
-  --space-8:   2rem;
-  --space-12:  3rem;
-  --space-16:  4rem;
-  --space-24:  6rem;
-  --space-32:  8rem;
+// Custom Easing (Organic, Not Mechanical)
+--ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);      // Decelerate (default)
+--ease-organic:   cubic-bezier(0.33, 0, 0.2, 1);      // Organic flow
+--ease-bounce:    cubic-bezier(0.34, 1.56, 0.64, 1);  // Playful bounce
 
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-
-  --max-width: 1100px;
-  --section-padding: var(--space-24) var(--space-8);
-}
+// Durations
+--duration-instant: 100ms;   // Micro-feedback
+--duration-fast:    200ms;   // Hover states
+--duration-base:    400ms;   // Standard transitions
+--duration-slow:    600ms;   // Scroll reveals
+--duration-morph:   1200ms;  // Blob morphing
 ```
 
 ---
 
-## Animation Tokens
+## Key Design Patterns
 
-```scss
-:root {
-  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-expo:   cubic-bezier(0.7, 0, 0.84, 0);
-  --ease-bounce:    cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  --duration-fast:  150ms;
-  --duration-base:  300ms;
-  --duration-slow:  600ms;
-  --duration-enter: 900ms;
-}
-```
-
----
-
-## Global Reset & Base Styles
-
-Create `src/styles/_reset.scss`:
-- CSS reset (box-sizing, margin 0, scroll-behavior smooth)
-- `body`: `background-color: var(--color-bg)`, `color: var(--color-text)`, `font-family: var(--font-body)`
-- `::selection` with accent color background
-- Custom scrollbar (thin, accent-colored track on dark bg)
-- Focus ring: `2px solid var(--color-accent)` with `outline-offset: 4px`
-
----
-
-## Glassmorphism Card Utility
-
-Create `src/styles/_utilities.scss` with a `.glass-card` class that Angular components can use via `ViewEncapsulation.None` or by referencing the global class in templates:
+### Glassmorphic Cards
+Warm-tinted glass with caramel/sage overlays, soft shadows, organic rounded corners.
 
 ```scss
 .glass-card {
-  background: var(--color-glass);
-  backdrop-filter: blur(12px) saturate(1.5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(74, 240, 200, 0.04) inset;
-  transition:
-    border-color var(--duration-base) var(--ease-out-expo),
-    box-shadow   var(--duration-base) var(--ease-out-expo);
-
-  &:hover {
-    border-color: rgba(74, 240, 200, 0.28);
-    box-shadow:
-      0 8px 40px rgba(0, 0, 0, 0.5),
-      0 0 32px rgba(74, 240, 200, 0.06) inset;
-  }
+  background: var(--glass-warm);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
+  border: 1px solid var(--border-warm);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
 }
 ```
 
-> In Angular components, apply global utility classes by adding `class="glass-card"` in the template. Component styles use `ViewEncapsulation.Emulated` (the default) so global utility classes defined in `styles.scss` still apply.
-
----
-
-## Background — Animated Grid
-
-Pure CSS fixed background grid in `_reset.scss`:
+### Biomorphic Blob Backgrounds
+Organic shapes that morph infinitely, placed behind sections for depth.
 
 ```scss
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(74, 240, 200, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(74, 240, 200, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
-  pointer-events: none;
-  z-index: 0;
+.blob-bg {
+  border-radius: var(--radius-blob);
+  filter: blur(60px);
+  animation: blob-morph 20s ease-in-out infinite;
 }
 ```
 
----
+### Button Hierarchy
+1. **Primary:** Sage green solid (`.btn-primary`)
+2. **Secondary:** Caramel outlined (`.btn-secondary`)
+3. **Tertiary:** Ghost/underlined (`.btn-tertiary`)
 
-## Section Number Label Convention
-
-Each section has a small monospace label, e.g. `01 / EXPERIENCE`, positioned top-left in muted text. Define a shared SCSS mixin:
-
-```scss
-// in _utilities.scss
-@mixin section-label {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: var(--space-4);
-}
-```
-
-Use it in each component's SCSS: `.label { @include section-label; }`
+### Tag/Badge System
+Organic pill-shaped badges with warm-tinted backgrounds (`.tag-sage`, `.tag-caramel`, `.tag-oker`)
 
 ---
 
-## Boneyard Skeleton Color Customisation
+## Implementation Structure
 
-Boneyard's shimmer color is configured globally in `boneyard.config.json` (done in Step 01). To override per-component, pass `[color]` and `[darkColor]` inputs to `<boneyard-skeleton>`.
-
-The default `rgba(74, 240, 200, 0.08)` cyan tint matches the site's accent palette and looks intentional rather than generic.
-
----
-
-## File Structure
+### SCSS Files to Create
 
 ```
 src/styles/
-  _tokens.scss
-  _typography.scss
-  _reset.scss
-  _utilities.scss
-  _animations.scss   ← keyframes for entrance animations
-src/styles.scss      ← Angular's global stylesheet; imports all partials
+├── _tokens.scss         ← CSS variables (colors, spacing, typography, easing, radii)
+├── _reset.scss          ← CSS reset, base element styles
+├── _typography.scss     ← Font-face declarations
+├── _glassmorphism.scss  ← Glass card utilities
+├── _biomorphic.scss     ← Blob backgrounds, animations
+├── _animations.scss     ← Keyframes (fade-up, blob-morph)
+├── _utilities.scss      ← Helper classes (.sr-only-focusable, etc.)
+├── _buttons.scss        ← Button variants
+├── _tags.scss           ← Tag/badge variants
+└── styles.scss          ← Main import file
 ```
 
-`src/styles.scss` content:
+### Angular Components
 
-```scss
-@use 'styles/tokens';
-@use 'styles/typography';
-@use 'styles/reset';
+```
+src/app/components/
+├── hero/                ← Pretext kinetic + blobs
+├── about/               ← Asymmetric text layout
+├── experience/          ← Timeline with glass cards
+├── projects/            ← Grid of project cards
+├── skills/              ← Skill categories
+├── hobbies/             ← Gallery grid
+├── contact/             ← Contact form/CTA
+└── shared/
+    ├── glass-card/      ← Reusable card wrapper
+    ├── badge/           ← Tag component
+    ├── button/          ← Button component
+    ├── section-header/  ← Eyebrow + H2 pattern
+    ├── blob-background/ ← Animated blob
+    └── skeleton-wrapper/← Boneyard container
+```
+
+---
+
+## Accessibility Requirements
+
+### WCAG 2.2 Level AA Compliance
+✅ **Color Contrast:**
+- Primary text (#2d2a26) on canvas (#f8f4ef): **11.2:1**
+- Secondary text (#5f5a52) on canvas: **6.8:1**
+- Sage dark (#5f6d5f) on canvas: **5.2:1**
+
+✅ **Keyboard Navigation:**
+- All interactive elements keyboard accessible
+- Visible focus states (sage outline)
+- Skip link to main content
+- No keyboard traps
+
+✅ **Motion Accessibility:**
+- Honor `prefers-reduced-motion: reduce`
+- Disable all animations for users who request it
+
+✅ **Semantic HTML:**
+- Proper landmarks (`<header>`, `<nav>`, `<main>`, `<footer>`)
+- Heading hierarchy (no skipped levels)
+- ARIA labels where needed
+
+---
+
+## Performance Guidelines
+
+### 60fps Animation Target
+✅ **Animate only:** `transform`, `opacity`, `filter`  
+❌ **Never animate:** `top`, `left`, `width`, `height`, `margin`  
+✅ **Blob blur limit:** Max 60px blur, only on `position: fixed` elements  
+❌ **Never apply `backdrop-filter`:** To scrolling containers (mobile performance killer)
+
+### Image Optimization
+- Use WebP format
+- Lazy loading with `loading="lazy"`
+- Descriptive alt text for accessibility
+
+### Font Loading
+- Preload critical fonts (DM Sans, Inter)
+- Use `font-display: swap` to prevent FOIT
+
+---
+
+## Next Steps
+
+1. ✅ Review full design specification in [`DESIGN.md`](../DESIGN.md)
+2. 📝 Create SCSS token files in `src/styles/`
+3. 🏗️ Build shared component library
+4. ✨ Implement hero section with Pretext + blobs
+5. 🎨 Build content sections (About, Experience, Projects, Skills, Hobbies, Contact)
+6. 🎬 Wire up GSAP ScrollTrigger animations
+7. 🦴 Add Boneyard skeleton screens
+8. ♿ Accessibility audit (WCAG 2.2 AA)
+9. 🚀 Performance audit (Lighthouse 90+)
+10. 🌍 Deploy to wimstienstra.nl
+
+---
+
+## Design System Enforcement
+
+### ✅ Do's
+- Use design tokens exclusively (CSS variables)
+- Apply glassmorphism classes
+- Use biomorphic shapes (organic border-radius)
+- Maintain warm palette (sage, caramel, oker, navy)
+- Test accessibility (WCAG contrast, keyboard nav)
+- Optimize for 60fps (GPU-only animations)
+
+### ❌ Don'ts
+- Hardcode colors, spacing, or border-radius
+- Use cold blue accents (no electric cyan!)
+- Use harsh geometric shapes (no sharp corners)
+- Animate layout-triggering properties
+- Skip semantic HTML
+- Ignore focus states
+
+---
+
+**For complete design language documentation, component patterns, animation specifications, and accessibility guidelines, see [`DESIGN.md`](../DESIGN.md).**
+
 @use 'styles/utilities';
 @use 'styles/animations';
 ```

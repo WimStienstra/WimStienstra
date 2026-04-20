@@ -1,7 +1,7 @@
 # Step 05 — About Section
 
 ## Objective
-Build the About section as an Angular 19 standalone component: a personal intro that communicates who Wim is beyond a job title — his values, working style, and unique combination of engineering + AI + hobbies.
+Build the About section as an Angular 21 standalone component: a personal intro that communicates who Wim is beyond a job title — his values, working style, and unique combination of engineering + AI + hobbies.
 
 ---
 

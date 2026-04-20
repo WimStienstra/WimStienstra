@@ -29,12 +29,16 @@ Build a flashy, recruiter-impressing frontend portfolio for Wim Stienstra that s
 WimStienstra/WimStienstra (GitHub repo)
 ├── plan/                    ← this folder (per-step agent instructions)
 ├── src/
-│   ├── content/             ← ALL editable content lives here (JSON)
+│   ├── content/             ← ALL editable content lives here (JSON + Markdown)
 │   │   ├── meta.json
 │   │   ├── experience.json  ← includes optional imageUrl per entry
 │   │   ├── projects.json
 │   │   ├── skills.json      ← includes optional imageUrl per skill category
-│   │   └── hobbies.json     ← game mods, drone footage, music production
+│   │   ├── hobbies.json     ← game mods, drone footage, music production
+│   │   ├── blog-index.json  ← auto-generated from blog/*.md files
+│   │   └── blog/            ← markdown blog posts with frontmatter
+│   │       ├── first-home-automation-setup.md
+│   │       └── experimenting-with-ai-agents.md
 │   ├── app/
 │   │   ├── app.component.ts / .html / .scss
 │   │   ├── components/
@@ -44,6 +48,10 @@ WimStienstra/WimStienstra (GitHub repo)
 │   │   │   ├── projects/
 │   │   │   ├── skills/
 │   │   │   ├── hobbies/
+│   │   │   ├── blog/            ← blog list & post components
+│   │   │   │   ├── blog-list/
+│   │   │   │   ├── blog-post/
+│   │   │   │   └── shared/
 │   │   │   └── contact/
 │   │   └── shared/          ← shared components (tag, badge, skeleton wrappers)
 │   ├── bones/               ← Boneyard auto-generated .bones.json files
@@ -61,7 +69,8 @@ WimStienstra/WimStienstra (GitHub repo)
 │       ├── cv-wim-stienstra.pdf
 │       ├── experience/      ← per-job images
 │       ├── skills/          ← per-skill/category images
-│       └── hobbies/         ← mod screenshots, drone photos, music
+│       ├── hobbies/         ← mod screenshots, drone photos, music
+│       └── blog/            ← blog post images (all posts share this folder)
 ├── .github/workflows/
 │   └── deploy.yml           ← GitHub Actions → GitHub Pages
 ├── boneyard.config.json     ← Boneyard capture config
@@ -87,10 +96,17 @@ WimStienstra/WimStienstra (GitHub repo)
 
 ## Content Update Workflow (for Wim)
 
+### Portfolio Sections (JSON)
 1. Open the relevant `.json` file in `src/content/` on GitHub or in VS Code
 2. Edit text, add/change image paths, update tags or proficiency levels
 3. Drop any new images into `public/assets/<section>/`
 4. Commit → GitHub Actions automatically rebuilds and deploys in ~45 seconds
+
+### Blog Posts (Markdown)
+1. Create or edit `.md` file in `src/content/blog/` with frontmatter (title, date, slug, tags, excerpt, coverImage)
+2. Write content in markdown with inline images using `/assets/blog/` paths
+3. Drop any new images into `public/assets/blog/`
+4. Commit → Blog index auto-generates, routes prerender, site deploys in ~60 seconds
 
 ---
 
@@ -109,3 +125,4 @@ WimStienstra/WimStienstra (GitHub repo)
 | `09-contact-section.md` | Contact section with links |
 | `10-deployment.md` | Static files build + upload to any web host (FTP/Netlify/CF Pages/Vercel) |
 | `11-hobbies-section.md` | Hobbies gallery — game mods, drone footage, music production |
+| `12-blog-section.md` | Blog with markdown posts, multi-image support, tags/search, code highlighting, TOC |

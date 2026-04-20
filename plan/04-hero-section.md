@@ -1,7 +1,7 @@
 # Step 04 — Hero Section (Pretext Kinetic Typography)
 
 ## Objective
-Build the most visually striking section of the site: a full-viewport hero featuring display text rendered with `@chenglou/pretext` for kinetic, cursor-reactive layout, layered over the animated grid background. Built as an Angular 19 standalone component.
+Build the most visually striking section of the site: a full-viewport hero featuring display text rendered with `@chenglou/pretext` for kinetic, cursor-reactive layout, layered over the animated grid background. Built as an Angular 21 standalone component.
 
 ---
 
