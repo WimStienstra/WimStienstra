@@ -1,85 +1,51 @@
-# Step 10 — Deployment (GitHub Actions → GitHub Pages)
+# Step 10 — Deployment (Static Files → wimstienstra.nl)
 
 ## Objective
-Configure automatic deployment of the Angular portfolio to GitHub Pages using GitHub Actions. Every push to `main` triggers a production build and deploys the output folder. The custom domain `wimstienstra.nl` is configured.
+Build the Angular portfolio into a set of **purely static files** and deploy them to Wim's existing static web host under `wimstienstra.nl`. No server-side rendering is used — `ng build` produces HTML, hashed JS/CSS, and assets that any static host can serve without configuration.
 
 ---
 
-## Files to Create
+## Why This Works with Any Static Host
 
-### `.github/workflows/deploy.yml`
+The portfolio uses:
+- **No Angular Router** (`--routing false`) → no deep-link 404 problem
+- **No SSR / SSG** → no Node.js server needed
+- **Pure `baseHref: "/"`** → all paths resolve from the domain root
 
-```yaml
-name: Deploy Portfolio to GitHub Pages
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build Angular app
-        run: npm run build
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist/wimstienstra/browser
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-```
-
-> **Angular output path:** Angular 17+ with the new esbuild builder outputs to `dist/<project>/browser/`. Confirm the exact path by checking the `outputPath` in `angular.json` under `projects.wimstienstra.architect.build.options`. Adjust the `path:` in the workflow if needed.
+The output folder `dist/wimstienstra/browser/` is 100% static and identical to what Netlify, Cloudflare Pages, Vercel, shared cPanel hosting, or any FTP-based host would expect.
 
 ---
 
-### `public/CNAME`
+## Build Command
 
-For the custom domain `wimstienstra.nl`:
+```bash
+npm run build
+# equivalent to: ng build --configuration production
+```
+
+Angular 21 uses the **esbuild** bundler by default. Expected output:
 
 ```
-wimstienstra.nl
+dist/
+└── wimstienstra/
+    └── browser/
+        ├── index.html
+        ├── main-XXXX.js
+        ├── polyfills-XXXX.js
+        ├── styles-XXXX.css
+        └── assets/
+            ├── avatar.jpg
+            ├── cv-wim-stienstra.pdf
+            ├── experience/
+            ├── skills/
+            └── hobbies/
 ```
 
-> GitHub Pages also needs the domain configured in the repo settings: *Settings → Pages → Custom domain → `wimstienstra.nl`*
+> Upload **everything inside `dist/wimstienstra/browser/`** to the root of your web host.
 
 ---
 
-### `angular.json` — Confirm Base Href & Output Path
+## `angular.json` — Build Options to Confirm
 
 Under `projects.wimstienstra.architect.build.options`:
 
@@ -90,13 +56,15 @@ Under `projects.wimstienstra.architect.build.options`:
 }
 ```
 
-For the production configuration, ensure `outputHashing` is `"all"` for long-term cache busting:
+Production configuration (should be present by default in Angular 21):
 
 ```json
 {
   "configurations": {
     "production": {
-      "outputHashing": "all"
+      "outputHashing": "all",
+      "optimization": true,
+      "sourceMap": false
     }
   }
 }
@@ -104,33 +72,150 @@ For the production configuration, ensure `outputHashing` is `"all"` for long-ter
 
 ---
 
-### DNS Configuration (outside repo — inform Wim)
+## Deployment Options
 
-In the DNS settings for `wimstienstra.nl`, add these records:
-
-| Type | Name | Value |
-|------|------|-------|
-| A | `@` | `185.199.108.153` |
-| A | `@` | `185.199.109.153` |
-| A | `@` | `185.199.110.153` |
-| A | `@` | `185.199.111.153` |
-| CNAME | `www` | `wimstienstra.github.io` |
-
-GitHub will automatically provision an HTTPS certificate (Let's Encrypt) once DNS propagates (up to 24h).
+Choose the method that fits the hosting provider.
 
 ---
 
-## GitHub Repository Settings
+### Option A — Manual Upload (cPanel / File Manager / FTP)
 
-1. Go to *Settings → Pages*
-2. Under *Build and deployment → Source*, select **GitHub Actions**
-3. Add the custom domain `wimstienstra.nl` and check *Enforce HTTPS*
+1. Run `npm run build` locally
+2. Open your host's file manager or FTP client (FileZilla, WinSCP, etc.)
+3. Upload the contents of `dist/wimstienstra/browser/` to the **document root** of `wimstienstra.nl` (usually `public_html/` or `www/`)
+4. If a previous version exists, delete old hashed JS/CSS files first to avoid stale file conflicts
+
+> **Tip:** Enable gzip/brotli compression in your host's `.htaccess` or control panel for better performance.
+
+Optional `.htaccess` for Apache-based hosts (add to the root of the upload):
+
+```apacheconf
+# Cache hashed assets for 1 year
+<FilesMatch "\.[0-9a-f]{8,}\.(js|css)$">
+  Header set Cache-Control "max-age=31536000, immutable"
+</FilesMatch>
+
+# Cache index.html for 10 minutes only
+<Files "index.html">
+  Header set Cache-Control "max-age=600, no-cache"
+</Files>
+
+# Enable gzip
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript
+</IfModule>
+```
+
+---
+
+### Option B — Netlify (free, automatic deploys from GitHub)
+
+1. Connect the `WimStienstra/WimStienstra` GitHub repo to Netlify
+2. Build settings:
+   - **Build command:** `npm run build`
+   - **Publish directory:** `dist/wimstienstra/browser`
+   - **Node version:** `22`
+3. Add custom domain `wimstienstra.nl` in *Netlify → Domain management*
+4. Netlify provisions HTTPS automatically (Let's Encrypt)
+
+`netlify.toml` (optional, place in repo root for committed config):
+
+```toml
+[build]
+  command = "npm run build"
+  publish = "dist/wimstienstra/browser"
+
+[build.environment]
+  NODE_VERSION = "22"
+```
+
+---
+
+### Option C — Cloudflare Pages (free, automatic deploys from GitHub)
+
+1. Connect the repo in Cloudflare Pages
+2. Build settings:
+   - **Framework preset:** Angular
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist/wimstienstra/browser`
+   - **Node.js version:** `22`
+3. Add custom domain `wimstienstra.nl` in Cloudflare Pages → Custom domains
+4. HTTPS provisioned automatically
+
+---
+
+### Option D — Vercel (free)
+
+1. Import repo in Vercel; choose "Angular" framework
+2. Override output directory to `dist/wimstienstra/browser`
+3. Add `wimstienstra.nl` as a custom domain
+
+---
+
+### Option E — GitHub Actions CI Build + FTP Deploy
+
+If the host only supports FTP, use a GitHub Actions workflow to build and push automatically on every push to `main`:
+
+```yaml
+# .github/workflows/deploy.yml
+name: Build & Deploy Portfolio
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular app
+        run: npm run build
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: dist/wimstienstra/browser/
+          server-dir: /public_html/    # adjust to your host's root path
+```
+
+> Add `FTP_HOST`, `FTP_USERNAME`, and `FTP_PASSWORD` as encrypted GitHub Actions secrets (*Repo → Settings → Secrets and variables → Actions*). Never hardcode credentials.
+
+---
+
+## DNS Configuration
+
+Point the domain to the static host. Exact records depend on the hosting provider — use the values they provide:
+
+| Common provider | Record type | Typical value |
+|-----------------|-------------|---------------|
+| cPanel / shared host | A | IP from host's control panel |
+| Netlify | CNAME (apex: A + AAAA) | `<app>.netlify.app` |
+| Cloudflare Pages | CNAME (proxied) | `<app>.pages.dev` |
+| Vercel | A | `76.76.21.21` |
+
+**www redirect:** Add a CNAME `www → wimstienstra.nl` and enable a redirect (301) in the host's control panel so `www.wimstienstra.nl` → `wimstienstra.nl`.
 
 ---
 
 ## `index.html` Meta Tags
 
-Update `src/index.html` with proper meta tags:
+Update `src/index.html` with proper meta tags for SEO and social sharing:
 
 ```html
 <head>
@@ -163,7 +248,7 @@ Create `public/favicon.svg`:
 
 ## Performance Targets
 
-After deployment, run a Lighthouse audit:
+After deployment, run a Lighthouse audit at `https://wimstienstra.nl`:
 
 | Metric | Target |
 |--------|--------|
@@ -172,38 +257,37 @@ After deployment, run a Lighthouse audit:
 | Best Practices | ≥ 90 |
 | SEO | ≥ 90 |
 
-Angular-specific optimisations included by default:
-- Tree-shaking (dead code removed)
-- Lazy loading (standalone components load on demand if routing is added later)
-- Asset hashing (long-term cache)
-- esbuild bundler (fast, small output)
+Angular 21 build optimisations active by default:
+- **esbuild** bundler — fast, compact output
+- Tree-shaking — no unused code
+- Asset hashing — long-term browser cache
+- Defer loading — non-critical scripts load after paint
 
-Quick wins:
-- Add `loading="lazy"` on all `<img>` below the fold (already in plans for each section)
-- Ensure `public/robots.txt` exists
-- Add `public/sitemap.xml` (optional but helps SEO)
+Quick wins to check:
+- `loading="lazy"` on all `<img>` below the fold (already in each section plan)
+- `public/robots.txt` exists (`User-agent: *\nAllow: /`)
+- `.htaccess` gzip rules if on Apache
 
 ---
 
 ## Verify Deployment
 
-After the first successful workflow run:
 1. Open `https://wimstienstra.nl` — site loads
 2. Open `https://www.wimstienstra.nl` — redirects to apex domain
-3. Check HTTPS padlock is valid
-4. Test all anchor links (`#about`, `#experience`, `#projects`, `#skills`, `#hobbies`, `#contact`)
-5. Test on mobile (Chrome DevTools: iPhone 14, Pixel 7)
+3. HTTPS padlock is valid
+4. All section anchors work: `#about`, `#experience`, `#projects`, `#skills`, `#hobbies`, `#contact`
+5. Test on mobile (Chrome DevTools: iPhone 15, Pixel 8)
+6. Run Lighthouse audit
 
 ---
 
 ## Acceptance Criteria
-- [ ] `.github/workflows/deploy.yml` exists and is valid YAML
-- [ ] `public/CNAME` contains `wimstienstra.nl`
+- [ ] `npm run build` succeeds and `dist/wimstienstra/browser/` is populated
 - [ ] `angular.json` has `baseHref: "/"` and correct output path
-- [ ] Pushing to `main` triggers the workflow (visible in Actions tab)
-- [ ] Workflow completes successfully (build + deploy jobs green)
-- [ ] Output path in the workflow matches the Angular build output
+- [ ] All static files (HTML, JS, CSS, assets) upload to the host root
 - [ ] Site is live at `https://wimstienstra.nl`
-- [ ] HTTPS is enforced
+- [ ] HTTPS is active
+- [ ] `www.wimstienstra.nl` redirects to apex
 - [ ] `index.html` has all required meta tags and Google Fonts preconnect
-- [ ] Favicon is visible in browser tab
+- [ ] Favicon visible in browser tab
+- [ ] Lighthouse Performance ≥ 90

@@ -9,15 +9,15 @@ Build a flashy, recruiter-impressing frontend portfolio for Wim Stienstra that s
 
 | Layer | Choice | Reason |
 |-------|--------|--------|
-| Framework | **Angular 19 (standalone components)** | Wim's primary expertise; proves mastery on the portfolio itself |
+| Framework | **Angular 21.2.x (standalone components)** | Wim's primary expertise; proves mastery on the portfolio itself; latest stable as of April 2026 |
 | Text layout / effects | **`@chenglou/pretext`** | Kinetic, cursor-reactive typography in the hero; zero-dependency, 15 KB |
-| Animation | **GSAP (GreenSock)** | Industry-standard, buttery scroll + entrance animations |
+| Animation | **GSAP 3.14.x (GreenSock)** | Industry-standard, buttery scroll + entrance animations; now **fully free** — all plugins included, Webflow-sponsored |
 | Styling | **SCSS + CSS custom properties** | Angular's default style system; scoped component styles + global tokens |
 | Skeleton loading | **`boneyard-js/angular`** | Pixel-perfect skeleton screens auto-captured from real UI; zero manual measurement |
 | Content | **JSON files in `src/content/`** | Edit one file to update any section—no CMS login needed |
 | Icons | **`lucide-angular`** | Clean, consistent, tree-shakeable — Angular-native package |
-| Deployment | **GitHub Pages via GitHub Actions** | Free, fast, already in the WimStienstra repo |
-| Domain | **wimstienstra.nl** | Existing domain, point DNS to GitHub Pages |
+| Deployment | **Static files → any web host** | `ng build` produces pure static HTML/JS/CSS; upload `dist/wimstienstra/browser/` to Wim's existing static host |
+| Domain | **wimstienstra.nl** | Existing domain, point DNS to the static host's server |
 
 > **Why no headless CMS?** Wim is a developer — JSON files in the repo are version-controlled, diff-friendly, and editable in VS Code or directly on GitHub. If a GUI is wanted later, Tina CMS (git-backed, free tier) can be dropped in without changing the architecture.
 
@@ -98,7 +98,7 @@ WimStienstra/WimStienstra (GitHub repo)
 
 | File | Step |
 |------|------|
-| `01-project-setup.md` | Scaffold Angular 19 app, install all deps, configure GitHub Pages |
+| `01-project-setup.md` | Scaffold Angular 21 app, install all deps, configure static build |
 | `02-content-layer.md` | Create all JSON content files with Wim's real data (incl. images + hobbies) |
 | `03-design-system.md` | SCSS tokens, global styles, fonts, animation utilities |
 | `04-hero-section.md` | Pretext kinetic hero component (Angular) |
@@ -107,5 +107,5 @@ WimStienstra/WimStienstra (GitHub repo)
 | `07-projects-section.md` | Project showcase with hover effects |
 | `08-skills-section.md` | Skills visualization + images + Boneyard skeleton |
 | `09-contact-section.md` | Contact section with links |
-| `10-deployment.md` | GitHub Actions workflow + GitHub Pages config (Angular) |
+| `10-deployment.md` | Static files build + upload to any web host (FTP/Netlify/CF Pages/Vercel) |
 | `11-hobbies-section.md` | Hobbies gallery — game mods, drone footage, music production |
