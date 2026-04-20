@@ -1,7 +1,7 @@
 # Plan Overview — Wim Stienstra Portfolio
 
 ## Goal
-Build a flashy, recruiter-impressing frontend portfolio for Wim Stienstra that showcases Angular/monorepo expertise, creative engineering, and a forward-thinking mindset. The site must be easy to update without touching code.
+Build a flashy, recruiter-impressing frontend portfolio for Wim Stienstra that showcases Angular/monorepo expertise, creative engineering, AI-assisted development, and a well-rounded personality including game modding, drone flying, and music production. The site must be easy to update without touching code.
 
 ---
 
@@ -9,12 +9,13 @@ Build a flashy, recruiter-impressing frontend portfolio for Wim Stienstra that s
 
 | Layer | Choice | Reason |
 |-------|--------|--------|
-| Framework | **React 19 + Vite** | Fast DX, huge ecosystem, Pretext works great with it |
-| Text layout / effects | **`@chenglou/pretext`** | Kinetic, physics-driven typography in the hero; zero-dependency, 15 KB |
+| Framework | **Angular 19 (standalone components)** | Wim's primary expertise; proves mastery on the portfolio itself |
+| Text layout / effects | **`@chenglou/pretext`** | Kinetic, cursor-reactive typography in the hero; zero-dependency, 15 KB |
 | Animation | **GSAP (GreenSock)** | Industry-standard, buttery scroll + entrance animations |
-| Styling | **CSS Modules + CSS custom properties** | Scoped styles, zero runtime, easy theming |
+| Styling | **SCSS + CSS custom properties** | Angular's default style system; scoped component styles + global tokens |
+| Skeleton loading | **`boneyard-js/angular`** | Pixel-perfect skeleton screens auto-captured from real UI; zero manual measurement |
 | Content | **JSON files in `src/content/`** | Edit one file to update any section—no CMS login needed |
-| Icons | **Lucide React** | Clean, consistent, tree-shakeable |
+| Icons | **`lucide-angular`** | Clean, consistent, tree-shakeable — Angular-native package |
 | Deployment | **GitHub Pages via GitHub Actions** | Free, fast, already in the WimStienstra repo |
 | Domain | **wimstienstra.nl** | Existing domain, point DNS to GitHub Pages |
 
@@ -26,29 +27,46 @@ Build a flashy, recruiter-impressing frontend portfolio for Wim Stienstra that s
 
 ```
 WimStienstra/WimStienstra (GitHub repo)
-├── plan/                  ← this folder (per-step agent instructions)
+├── plan/                    ← this folder (per-step agent instructions)
 ├── src/
-│   ├── content/           ← ALL editable content lives here (JSON)
+│   ├── content/             ← ALL editable content lives here (JSON)
 │   │   ├── meta.json
-│   │   ├── experience.json
+│   │   ├── experience.json  ← includes optional imageUrl per entry
 │   │   ├── projects.json
-│   │   └── skills.json
-│   ├── components/
-│   │   ├── Hero/
-│   │   ├── About/
-│   │   ├── Experience/
-│   │   ├── Projects/
-│   │   ├── Skills/
-│   │   └── Contact/
-│   ├── hooks/
-│   ├── styles/            ← global CSS, design tokens
-│   └── main.jsx
+│   │   ├── skills.json      ← includes optional imageUrl per skill category
+│   │   └── hobbies.json     ← game mods, drone footage, music production
+│   ├── app/
+│   │   ├── app.component.ts / .html / .scss
+│   │   ├── components/
+│   │   │   ├── hero/
+│   │   │   ├── about/
+│   │   │   ├── experience/
+│   │   │   ├── projects/
+│   │   │   ├── skills/
+│   │   │   ├── hobbies/
+│   │   │   └── contact/
+│   │   └── shared/          ← shared components (tag, badge, skeleton wrappers)
+│   ├── bones/               ← Boneyard auto-generated .bones.json files
+│   ├── styles/              ← global SCSS, design tokens
+│   │   ├── _tokens.scss
+│   │   ├── _typography.scss
+│   │   ├── _reset.scss
+│   │   ├── _utilities.scss
+│   │   └── _animations.scss
+│   ├── styles.scss          ← Angular global stylesheet (imports all partials)
+│   └── main.ts
 ├── public/
-│   └── assets/            ← images, CV PDF
+│   └── assets/              ← images, CV PDF, drone videos
+│       ├── avatar.jpg
+│       ├── cv-wim-stienstra.pdf
+│       ├── experience/      ← per-job images
+│       ├── skills/          ← per-skill/category images
+│       └── hobbies/         ← mod screenshots, drone photos, music
 ├── .github/workflows/
-│   └── deploy.yml         ← GitHub Actions → GitHub Pages
-├── index.html
-├── vite.config.js
+│   └── deploy.yml           ← GitHub Actions → GitHub Pages
+├── boneyard.config.json     ← Boneyard capture config
+├── angular.json
+├── tsconfig.json
 └── package.json
 ```
 
@@ -56,21 +74,23 @@ WimStienstra/WimStienstra (GitHub repo)
 
 ## Visual Direction
 
-- **Dark theme** (deep navy/charcoal `#0a0f1e`) with electric accent (`#4af0c8` — cyan-green)
+- **Dark theme** (deep navy/charcoal `#080d1a`) with electric accent (`#4af0c8` — cyan-green)
 - **Glassmorphism** cards with subtle blur + border glow
 - **Monospace font** for code-style labels (JetBrains Mono); modern sans for body (Inter)
-- **Pretext kinetic hero**: name/title wraps, flows, and reacts to cursor movement
+- **Pretext kinetic hero**: display text flows and physically avoids the cursor
 - **GSAP ScrollTrigger**: sections slide and fade in as the user scrolls
-- **Particle/grid background**: subtle CSS animated grid that shifts on scroll
-- No full-page loaders — everything is performant and accessible
+- **Boneyard skeletons**: every data-loaded section shows a pixel-perfect animated skeleton before content appears
+- **Animated CSS grid background**: subtle perspective grid on the page background
+- Images alongside experience entries and skill categories (optional per entry)
 
 ---
 
 ## Content Update Workflow (for Wim)
 
-1. Open `src/content/<section>.json` on GitHub or in VS Code
-2. Edit the data (job title, project description, skill, etc.)
-3. Commit → GitHub Actions automatically rebuilds and deploys in ~30 seconds
+1. Open the relevant `.json` file in `src/content/` on GitHub or in VS Code
+2. Edit text, add/change image paths, update tags or proficiency levels
+3. Drop any new images into `public/assets/<section>/`
+4. Commit → GitHub Actions automatically rebuilds and deploys in ~45 seconds
 
 ---
 
@@ -78,13 +98,14 @@ WimStienstra/WimStienstra (GitHub repo)
 
 | File | Step |
 |------|------|
-| `01-project-setup.md` | Scaffold Vite + React, install all deps, configure GitHub Pages |
-| `02-content-layer.md` | Create all JSON content files with Wim's real data |
-| `03-design-system.md` | CSS tokens, global styles, fonts, animation utilities |
-| `04-hero-section.md` | Pretext kinetic hero component |
-| `05-about-section.md` | About / personal intro section |
-| `06-experience-timeline.md` | Interactive animated experience timeline |
+| `01-project-setup.md` | Scaffold Angular 19 app, install all deps, configure GitHub Pages |
+| `02-content-layer.md` | Create all JSON content files with Wim's real data (incl. images + hobbies) |
+| `03-design-system.md` | SCSS tokens, global styles, fonts, animation utilities |
+| `04-hero-section.md` | Pretext kinetic hero component (Angular) |
+| `05-about-section.md` | About / personal intro section (Angular) |
+| `06-experience-timeline.md` | Interactive animated experience timeline + images |
 | `07-projects-section.md` | Project showcase with hover effects |
-| `08-skills-section.md` | Skills visualization component |
-| `09-contact-section.md` | Contact section with links and optional form |
-| `10-deployment.md` | GitHub Actions workflow + GitHub Pages config |
+| `08-skills-section.md` | Skills visualization + images + Boneyard skeleton |
+| `09-contact-section.md` | Contact section with links |
+| `10-deployment.md` | GitHub Actions workflow + GitHub Pages config (Angular) |
+| `11-hobbies-section.md` | Hobbies gallery — game mods, drone footage, music production |

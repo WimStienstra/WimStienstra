@@ -1,35 +1,35 @@
 # Step 03 — Design System
 
 ## Objective
-Establish the visual identity of the site: color palette, typography, spacing scale, animation utilities, and global CSS. Every component will consume these tokens — no hardcoded colors or sizes anywhere.
+Establish the visual identity of the site: color palette, typography, spacing scale, animation utilities, and global SCSS. Every component will consume these tokens — no hardcoded colors or sizes anywhere.
 
 ---
 
 ## Color Palette
 
-```css
-/* src/styles/tokens.css */
+```scss
+// src/styles/_tokens.scss
 :root {
-  /* Backgrounds */
-  --color-bg:          #080d1a;   /* deep navy — page background */
-  --color-surface:     #0f1729;   /* slightly lighter — card backgrounds */
-  --color-surface-2:   #162036;   /* hover states, raised surfaces */
+  // Backgrounds
+  --color-bg:          #080d1a;   // deep navy — page background
+  --color-surface:     #0f1729;   // slightly lighter — card backgrounds
+  --color-surface-2:   #162036;   // hover states, raised surfaces
 
-  /* Accent */
-  --color-accent:      #4af0c8;   /* electric cyan-green — primary CTA, highlights */
-  --color-accent-dim:  #1a9e85;   /* muted accent for secondary elements */
-  --color-accent-glow: rgba(74, 240, 200, 0.15); /* glow overlay */
+  // Accent
+  --color-accent:      #4af0c8;   // electric cyan-green — primary CTA, highlights
+  --color-accent-dim:  #1a9e85;   // muted accent for secondary elements
+  --color-accent-glow: rgba(74, 240, 200, 0.15); // glow overlay
 
-  /* Text */
-  --color-text:        #e8eaf0;   /* primary text */
-  --color-text-muted:  #7a8099;   /* secondary / labels */
-  --color-text-faint:  #3d4462;   /* very subtle, decorative */
+  // Text
+  --color-text:        #e8eaf0;   // primary text
+  --color-text-muted:  #7a8099;   // secondary / labels
+  --color-text-faint:  #3d4462;   // very subtle, decorative
 
-  /* Borders / Glass */
+  // Borders / Glass
   --color-border:      rgba(74, 240, 200, 0.12);
   --color-glass:       rgba(15, 23, 41, 0.6);
 
-  /* Status */
+  // Status / Tags
   --color-tag-bg:      rgba(74, 240, 200, 0.08);
   --color-tag-text:    #4af0c8;
 }
@@ -39,17 +39,17 @@ Establish the visual identity of the site: color palette, typography, spacing sc
 
 ## Typography
 
-**Fonts to load** (via `@font-face` from Google Fonts or self-hosted):
+**Fonts to load** (add `<link>` tags in `index.html` for Google Fonts, or self-host):
 - **Inter** — body text, headings
 - **JetBrains Mono** — code labels, section numbers, tech tags
 
-```css
-/* src/styles/typography.css */
+```scss
+// src/styles/_typography.scss
 :root {
   --font-body:  'Inter', system-ui, sans-serif;
   --font-mono:  'JetBrains Mono', 'Fira Code', monospace;
 
-  /* Scale (fluid with clamp) */
+  // Fluid scale with clamp
   --text-xs:   clamp(0.7rem,  1.5vw, 0.75rem);
   --text-sm:   clamp(0.85rem, 2vw,   0.9rem);
   --text-base: clamp(1rem,    2.5vw, 1.05rem);
@@ -65,7 +65,8 @@ Establish the visual identity of the site: color palette, typography, spacing sc
 
 ## Spacing & Layout
 
-```css
+```scss
+// Add to _tokens.scss
 :root {
   --space-1:   0.25rem;
   --space-2:   0.5rem;
@@ -91,7 +92,7 @@ Establish the visual identity of the site: color palette, typography, spacing sc
 
 ## Animation Tokens
 
-```css
+```scss
 :root {
   --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-expo:   cubic-bezier(0.7, 0, 0.84, 0);
@@ -108,20 +109,20 @@ Establish the visual identity of the site: color palette, typography, spacing sc
 
 ## Global Reset & Base Styles
 
-Create `src/styles/reset.css`:
+Create `src/styles/_reset.scss`:
 - CSS reset (box-sizing, margin 0, scroll-behavior smooth)
 - `body`: `background-color: var(--color-bg)`, `color: var(--color-text)`, `font-family: var(--font-body)`
-- `::selection` with accent color
+- `::selection` with accent color background
 - Custom scrollbar (thin, accent-colored track on dark bg)
 - Focus ring: `2px solid var(--color-accent)` with `outline-offset: 4px`
 
 ---
 
-## Glassmorphism Card Mixin
+## Glassmorphism Card Utility
 
-Create a utility class `.glass-card` (in a `src/styles/utilities.css` file):
+Create `src/styles/_utilities.scss` with a `.glass-card` class that Angular components can use via `ViewEncapsulation.None` or by referencing the global class in templates:
 
-```css
+```scss
 .glass-card {
   background: var(--color-glass);
   backdrop-filter: blur(12px) saturate(1.5);
@@ -130,25 +131,28 @@ Create a utility class `.glass-card` (in a `src/styles/utilities.css` file):
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.4),
     0 0 0 1px rgba(74, 240, 200, 0.04) inset;
-  transition: border-color var(--duration-base) var(--ease-out-expo),
-              box-shadow  var(--duration-base) var(--ease-out-expo);
-}
+  transition:
+    border-color var(--duration-base) var(--ease-out-expo),
+    box-shadow   var(--duration-base) var(--ease-out-expo);
 
-.glass-card:hover {
-  border-color: rgba(74, 240, 200, 0.28);
-  box-shadow:
-    0 8px 40px rgba(0, 0, 0, 0.5),
-    0 0 32px rgba(74, 240, 200, 0.06) inset;
+  &:hover {
+    border-color: rgba(74, 240, 200, 0.28);
+    box-shadow:
+      0 8px 40px rgba(0, 0, 0, 0.5),
+      0 0 32px rgba(74, 240, 200, 0.06) inset;
+  }
 }
 ```
+
+> In Angular components, apply global utility classes by adding `class="glass-card"` in the template. Component styles use `ViewEncapsulation.Emulated` (the default) so global utility classes defined in `styles.scss` still apply.
 
 ---
 
 ## Background — Animated Grid
 
-An SVG or CSS background that creates a subtle perspective grid shifting on scroll (pure CSS, no JavaScript):
+Pure CSS fixed background grid in `_reset.scss`:
 
-```css
+```scss
 body::before {
   content: '';
   position: fixed;
@@ -167,7 +171,30 @@ body::before {
 
 ## Section Number Label Convention
 
-Each section has a small monospace label, e.g. `01 / EXPERIENCE`, positioned top-left in muted text. This is a CSS-only decorative element, not semantic.
+Each section has a small monospace label, e.g. `01 / EXPERIENCE`, positioned top-left in muted text. Define a shared SCSS mixin:
+
+```scss
+// in _utilities.scss
+@mixin section-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: var(--space-4);
+}
+```
+
+Use it in each component's SCSS: `.label { @include section-label; }`
+
+---
+
+## Boneyard Skeleton Color Customisation
+
+Boneyard's shimmer color is configured globally in `boneyard.config.json` (done in Step 01). To override per-component, pass `[color]` and `[darkColor]` inputs to `<boneyard-skeleton>`.
+
+The default `rgba(74, 240, 200, 0.08)` cyan tint matches the site's accent palette and looks intentional rather than generic.
 
 ---
 
@@ -175,22 +202,31 @@ Each section has a small monospace label, e.g. `01 / EXPERIENCE`, positioned top
 
 ```
 src/styles/
-  reset.css
-  tokens.css
-  typography.css
-  utilities.css
-  animations.css   ← keyframes for entrance animations
+  _tokens.scss
+  _typography.scss
+  _reset.scss
+  _utilities.scss
+  _animations.scss   ← keyframes for entrance animations
+src/styles.scss      ← Angular's global stylesheet; imports all partials
 ```
 
-Import all of them in `src/main.jsx` in the order above.
+`src/styles.scss` content:
+
+```scss
+@use 'styles/tokens';
+@use 'styles/typography';
+@use 'styles/reset';
+@use 'styles/utilities';
+@use 'styles/animations';
+```
 
 ---
 
 ## Acceptance Criteria
-- [ ] All CSS token files created and imported in `main.jsx`
+- [ ] All SCSS partial files created and imported in `src/styles.scss`
 - [ ] Page background is `#080d1a` (dark navy)
 - [ ] Accent color `#4af0c8` applied to at least one visible element
 - [ ] Custom scrollbar styled
-- [ ] `.glass-card` utility class works (test by adding it to a stub component)
+- [ ] `.glass-card` utility class works (test by adding it to a stub component template)
 - [ ] Animated grid background is visible and subtle
-- [ ] `npm run build` passes without errors
+- [ ] `ng build` passes without errors

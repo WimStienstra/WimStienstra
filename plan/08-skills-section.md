@@ -1,7 +1,7 @@
 # Step 08 — Skills Section
 
 ## Objective
-Build a skills visualization that reads from `src/content/skills.json`. It should look impressive to a frontend recruiter: not a plain list, but an interactive, animated display that groups skills by category and shows proficiency.
+Build a skills visualization as an Angular 19 standalone component that reads from the updated `src/content/skills.json` (which now uses the `{ imageUrl, items }` object structure per category). An optional category image displays alongside the skill rows. A Boneyard skeleton is shown while content loads.
 
 ---
 
@@ -13,30 +13,36 @@ Build a skills visualization that reads from `src/content/skills.json`. It shoul
   [ Core ]  [ Testing ]  [ Ecosystem ]  [ AI ]  [ Soft Skills ]
      ↑ tab filter
 
-  ┌──────────────────────────┐
-  │  Angular         ●●●●●  │
-  │  TypeScript      ●●●●●  │
-  │  NX Monorepo     ●●●●●  │
-  │  RxJS            ●●●●○  │
-  └──────────────────────────┘
+  ┌──────────────────────────────────────────┐
+  │  [optional category image]               │
+  │  Angular         ●●●●●                   │
+  │  TypeScript      ●●●●●                   │
+  │  NX Monorepo     ●●●●●                   │
+  │  RxJS            ●●●●○                   │
+  └──────────────────────────────────────────┘
 
-  + floating skill cloud (Pretext) behind the cards
+  + floating skill cloud behind the cards
 ```
-
-The tab filter switches which category is shown. The proficiency dots animate from left when they enter the viewport or when a new tab is selected.
 
 ---
 
 ## Implementation
 
-### File: `src/components/Skills/Skills.jsx`
+### File: `src/app/components/skills/skills.component.ts`
 
-```jsx
-import { useState } from 'react'
-import skills from '../../content/skills.json'
-import styles from './Skills.module.css'
+```typescript
+import { Component, OnInit, signal, computed, AfterViewInit, ElementRef, ViewChild } from '@angular/core'
+import { SkeletonComponent } from 'boneyard-js/angular'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import skillsData from '../../../content/skills.json'
 
-const CATEGORY_LABELS = {
+gsap.registerPlugin(ScrollTrigger)
+
+interface SkillItem { name: string; level: number }
+interface SkillCategory { imageUrl: string; items: SkillItem[] }
+
+const CATEGORY_LABELS: Record<string, string> = {
   core:      'Core',
   testing:   'Testing',
   ecosystem: 'Ecosystem',
@@ -45,127 +51,178 @@ const CATEGORY_LABELS = {
   soft:      'Soft Skills',
 }
 
-function ProficiencyDots({ level, max = 5 }) {
-  return (
-    <span className={styles.dots} aria-label={`${level} out of ${max}`}>
-      {Array.from({ length: max }, (_, i) => (
-        <span
-          key={i}
-          className={`${styles.dot} ${i < level ? styles.filled : styles.empty}`}
-          style={{ animationDelay: `${i * 60}ms` }}
-        />
-      ))}
-    </span>
-  )
-}
+@Component({
+  selector: 'app-skills',
+  standalone: true,
+  imports: [SkeletonComponent],
+  templateUrl: './skills.component.html',
+  styleUrl: './skills.component.scss',
+})
+export class SkillsComponent implements OnInit, AfterViewInit {
+  readonly skills = skillsData as Record<string, SkillCategory>
+  readonly categories = Object.keys(skillsData)
+  readonly categoryLabels = CATEGORY_LABELS
+  readonly dotRange = [0, 1, 2, 3, 4] // proficiency dots (max 5)
 
-function SkillRow({ skill }) {
-  return (
-    <div className={styles.skillRow}>
-      <span className={styles.skillName}>{skill.name}</span>
-      <ProficiencyDots level={skill.level} />
-    </div>
-  )
-}
+  activeCategory = signal(this.categories[0])
+  isLoading = signal(true)
 
-export default function Skills() {
-  const categories = Object.keys(skills)
-  const [active, setActive] = useState(categories[0])
+  activeData = computed(() => this.skills[this.activeCategory()])
 
-  return (
-    <section id="skills" className={styles.skills}>
-      <span className={styles.label}>04 / SKILLS</span>
-      <h2 className={styles.heading}>Skills & Expertise</h2>
+  ngOnInit(): void {
+    setTimeout(() => this.isLoading.set(false), 500)
+  }
 
-      <div className={styles.tabs} role="tablist">
-        {categories.map(cat => (
-          <button
-            key={cat}
-            role="tab"
-            aria-selected={active === cat}
-            className={`${styles.tab} ${active === cat ? styles.tabActive : ''}`}
-            onClick={() => setActive(cat)}
-          >
-            {CATEGORY_LABELS[cat] ?? cat}
-          </button>
-        ))}
-      </div>
+  ngAfterViewInit(): void {
+    ScrollTrigger.create({
+      trigger: '.skills',
+      start: 'top 80%',
+      onEnter: () => {
+        gsap.fromTo('.skill-row',
+          { x: -20, opacity: 0 },
+          { x: 0, opacity: 1, stagger: 0.05, duration: 0.5, ease: 'power3.out' }
+        )
+      }
+    })
+  }
 
-      <div
-        className={styles.skillList}
-        role="tabpanel"
-        key={active}  /* remount to re-trigger CSS animation */
-      >
-        {(skills[active] ?? []).map(skill => (
-          <SkillRow key={skill.name} skill={skill} />
-        ))}
-      </div>
+  setCategory(cat: string): void {
+    this.activeCategory.set(cat)
+  }
 
-      <div className={styles.tagCloud} aria-hidden="true">
-        {Object.values(skills).flat().map(s => (
-          <span key={s.name} className={styles.cloudTag}>{s.name}</span>
-        ))}
-      </div>
-    </section>
-  )
+  getLabel(cat: string): string {
+    return CATEGORY_LABELS[cat] ?? cat
+  }
 }
 ```
 
 ---
 
-### File: `src/components/Skills/Skills.module.css`
+### File: `src/app/components/skills/skills.component.html`
+
+```html
+<section id="skills" class="skills">
+  <span class="label">04 / SKILLS</span>
+  <h2 class="heading">Skills &amp; Expertise</h2>
+
+  <div class="tabs" role="tablist">
+    @for (cat of categories; track cat) {
+      <button
+        role="tab"
+        [attr.aria-selected]="activeCategory() === cat"
+        class="tab"
+        [class.active]="activeCategory() === cat"
+        (click)="setCategory(cat)"
+      >
+        {{ getLabel(cat) }}
+      </button>
+    }
+  </div>
+
+  <boneyard-skeleton name="skills" [loading]="isLoading()" animate="shimmer" [transition]="300">
+    <div class="skill-panel" role="tabpanel">
+      @if (activeData().imageUrl) {
+        <div class="category-image-wrap">
+          <img
+            [src]="activeData().imageUrl"
+            [alt]="getLabel(activeCategory()) + ' skills'"
+            class="category-image"
+            loading="lazy"
+          />
+        </div>
+      }
+
+      <div class="skill-list">
+        @for (skill of activeData().items; track skill.name) {
+          <div class="skill-row">
+            <span class="skill-name">{{ skill.name }}</span>
+            <span class="dots" [attr.aria-label]="skill.level + ' out of 5'">
+              @for (i of dotRange; track i) {
+                <span class="dot" [class.filled]="i < skill.level" [class.empty]="i >= skill.level"
+                      [style.animation-delay]="(i * 60) + 'ms'"></span>
+              }
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  </boneyard-skeleton>
+
+  <!-- Decorative background tag cloud -->
+  <div class="tag-cloud" aria-hidden="true">
+    @for (cat of categories; track cat) {
+      @for (skill of skills[cat].items; track skill.name) {
+        <span class="cloud-tag">{{ skill.name }}</span>
+      }
+    }
+  </div>
+</section>
+```
+
+---
+
+### File: `src/app/components/skills/skills.component.scss`
 
 Key styles:
 
 - `.skills` — `padding: var(--section-padding); max-width: var(--max-width); margin: 0 auto; position: relative`
 - `.tabs` — `display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-8)`
-- `.tab` — `font-family: var(--font-mono); font-size: var(--text-xs); padding: var(--space-2) var(--space-4); border-radius: var(--radius-sm); background: transparent; border: 1px solid var(--color-border); color: var(--color-text-muted); cursor: pointer; transition: all var(--duration-base)`
-  - On hover: `color: var(--color-text); border-color: var(--color-accent-dim)`
-- `.tabActive` — `background: var(--color-tag-bg); color: var(--color-accent); border-color: var(--color-accent)`
-- `.skillList` — `display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3)`; animation: `fadeInUp var(--duration-base) var(--ease-out-expo)`
-  - Mobile: single column
-- `.skillRow` — `display: flex; justify-content: space-between; align-items: center; padding: var(--space-4) var(--space-6); background: var(--color-surface); border-radius: var(--radius-sm); border: 1px solid var(--color-border); transition: border-color var(--duration-fast)`
-  - On hover: `border-color: var(--color-border)` → `var(--color-accent-dim)`
-- `.skillName` — `font-size: var(--text-sm); color: var(--color-text)`
+- `.tab` — monospace font, ghost pill style; `.active` — `background: var(--color-tag-bg); color: var(--color-accent); border-color: var(--color-accent)`
+- `.skill-panel` — `display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: start`
+  - Mobile: `grid-template-columns: 1fr`
+- `.category-image-wrap` — `border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-border)`
+- `.category-image` — `width: 100%; height: 200px; object-fit: cover`
+  - If no image, the `.skill-list` spans the full width: `grid-column: 1 / -1` (handle with `@if` in template)
+- `.skill-list` — `display: flex; flex-direction: column; gap: var(--space-3)`
+- `.skill-row` — `display: flex; justify-content: space-between; align-items: center; padding: var(--space-4) var(--space-6); background: var(--color-surface); border-radius: var(--radius-sm); border: 1px solid var(--color-border)`
+  - On hover: `border-color: var(--color-accent-dim)`
 - `.dots` — `display: flex; gap: 5px`
 - `.dot` — `width: 8px; height: 8px; border-radius: 50%; animation: dotPop var(--duration-base) var(--ease-bounce) both`
-- `.filled` — `background: var(--color-accent)`; add a subtle `box-shadow: 0 0 6px var(--color-accent)`
-- `.empty` — `background: var(--color-surface-2); border: 1px solid var(--color-border)`
+  - `.filled` — `background: var(--color-accent); box-shadow: 0 0 6px var(--color-accent)`
+  - `.empty` — `background: var(--color-surface-2); border: 1px solid var(--color-border)`
+- `.tag-cloud` — `position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: -1`; `.cloud-tag` positioned randomly via a `ngAfterViewInit` loop
 
-```css
-@keyframes dotPop {
-  from { transform: scale(0); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
+---
 
-@keyframes fadeInUp {
-  from { transform: translateY(16px); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
-}
+## Boneyard Skeleton Setup
+
+After building the component, run the Boneyard CLI to capture the skeleton:
+
+```bash
+npx boneyard-js build
 ```
 
-- `.tagCloud` — `position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: -1`; contains `.cloudTag` elements scattered randomly with `position: absolute` and low `opacity: 0.04` — purely decorative background texture of skill names.
+This writes `src/bones/skills.bones.json`. Import the registry in `src/main.ts` (same file as the experience registry — one import covers all):
+
+```typescript
+import './bones/registry'
+```
 
 ---
 
-## Decorative Tag Cloud Positioning (JS)
-In a `useEffect`, after the component mounts, randomly distribute `.cloudTag` elements across the section using `element.style.left` / `top` with `Math.random()`. This is a decorative background layer only — `aria-hidden="true"` is already set.
+## Decorative Tag Cloud Positioning
+In `ngAfterViewInit`, randomly position `.cloud-tag` elements:
 
----
-
-## Scroll Animation (GSAP ScrollTrigger)
-When `.skillList` enters the viewport, each `.skillRow` animates in:
-- `x: -20 → 0`, `opacity: 0 → 1`, stagger `0.05s`
+```typescript
+const tags: NodeListOf<HTMLElement> = document.querySelectorAll('.cloud-tag')
+tags.forEach(tag => {
+  tag.style.left = Math.random() * 90 + '%'
+  tag.style.top  = Math.random() * 90 + '%'
+})
+```
 
 ---
 
 ## Acceptance Criteria
 - [ ] All skill categories from `skills.json` appear as tabs
 - [ ] Clicking a tab shows the correct skills with a fade animation
-- [ ] Proficiency dots animate in with the staggered pop effect
+- [ ] Proficiency dots animate with staggered pop effect
 - [ ] Filled dots glow with accent color
+- [ ] Category image displays when `imageUrl` is set; skill list spans full width when no image
+- [ ] Boneyard skeleton shimmer shows for ~500ms then fades to real content
+- [ ] `src/bones/skills.bones.json` exists after running `npx boneyard-js build`
 - [ ] Decorative tag cloud renders in the background (aria-hidden)
 - [ ] GSAP ScrollTrigger entrance animation fires correctly
 - [ ] Section has `id="skills"` for nav anchor
 - [ ] Keyboard accessible: tabs are focusable, `aria-selected` updates correctly
-- [ ] Responsive: 2-col skill list on desktop, 1-col on mobile
+- [ ] Responsive: 2-col panel on desktop (image + list), 1-col on mobile

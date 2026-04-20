@@ -1,7 +1,7 @@
 # Step 06 — Experience Timeline
 
 ## Objective
-Build an interactive, animated experience timeline that reads from `src/content/experience.json`. The timeline should feel alive — entries snap in as you scroll and expand on click/hover to reveal more detail.
+Build an interactive, animated experience timeline as an Angular 19 standalone component that reads from `src/content/experience.json`. Each entry can display an optional image. A Boneyard skeleton is shown while content loads.
 
 ---
 
@@ -10,101 +10,140 @@ Build an interactive, animated experience timeline that reads from `src/content/
 ```
 02 / EXPERIENCE
 
+[ skeleton shimmer while loading ]
+
 │
 ├── ● Sep 2025 – Present
 │   CJIB — Frontend Web Developer
 │   [Angular] [Monorepo] [TypeScript]
+│   ┌──────────────────────────────────────┐
+│   │  [optional job screenshot/image]     │
+│   └──────────────────────────────────────┘
 │   > (click to expand description)
 │
 ├── ● Sep 2024 – Sep 2025
 │   CJIB — Full Stack Developer
-│   [Angular] [NX] [Playwright] [Jest]
-│
-├── ● Feb 2024 – Sep 2024
-│   CJIB — Graduate Intern
 │
 ...
 ```
-
-The vertical line is drawn in `var(--color-border)`. The dot for the active/hovered entry glows with `var(--color-accent)`. Expanding an entry pushes the items below down with a smooth height transition.
 
 ---
 
 ## Implementation
 
-### File: `src/components/Experience/Experience.jsx`
+### File: `src/app/components/experience/experience.component.ts`
 
-```jsx
-import { useState } from 'react'
-import experience from '../../content/experience.json'
-import styles from './Experience.module.css'
+```typescript
+import { Component, OnInit, signal } from '@angular/core'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SkeletonComponent } from 'boneyard-js/angular'
+import experienceData from '../../../content/experience.json'
 
-function Tag({ label }) {
-  return <span className={styles.tag}>{label}</span>
+gsap.registerPlugin(ScrollTrigger)
+
+export interface ExperienceEntry {
+  id: string
+  company: string
+  role: string
+  period: string
+  location: string
+  tags: string[]
+  imageUrl: string
+  description: string
 }
 
-function ExperienceEntry({ entry, isOpen, onToggle }) {
-  return (
-    <article
-      className={`${styles.entry} ${isOpen ? styles.open : ''}`}
-      onClick={onToggle}
-      aria-expanded={isOpen}
-    >
-      <div className={styles.dot} aria-hidden="true">
-        <div className={styles.dotInner} />
-      </div>
+@Component({
+  selector: 'app-experience',
+  standalone: true,
+  imports: [SkeletonComponent],
+  templateUrl: './experience.component.html',
+  styleUrl: './experience.component.scss',
+})
+export class ExperienceComponent implements OnInit {
+  readonly experience: ExperienceEntry[] = experienceData
+  openId = signal<string | null>(experienceData[0]?.id ?? null)
+  isLoading = signal(true)
 
-      <div className={styles.content}>
-        <time className={styles.period}>{entry.period}</time>
-        <h3 className={styles.role}>{entry.role}</h3>
-        <p className={styles.company}>{entry.company}</p>
+  ngOnInit(): void {
+    // Simulate async load (replace with real async fetch if content moves to an API later)
+    setTimeout(() => this.isLoading.set(false), 600)
+  }
 
-        <div className={styles.tags}>
-          {entry.tags.map(tag => <Tag key={tag} label={tag} />)}
-        </div>
+  toggle(id: string): void {
+    this.openId.update(current => current === id ? null : id)
+  }
 
-        <div className={`${styles.description} ${isOpen ? styles.descriptionOpen : ''}`}>
-          <p>{entry.description}</p>
-        </div>
-      </div>
-    </article>
-  )
-}
-
-export default function Experience() {
-  const [openId, setOpenId] = useState(experience[0]?.id ?? null)
-
-  const toggle = (id) => setOpenId(prev => prev === id ? null : id)
-
-  return (
-    <section id="experience" className={styles.experience}>
-      <span className={styles.label}>02 / EXPERIENCE</span>
-      <h2 className={styles.heading}>Career Journey</h2>
-
-      <div className={styles.timeline}>
-        {experience.map(entry => (
-          <ExperienceEntry
-            key={entry.id}
-            entry={entry}
-            isOpen={openId === entry.id}
-            onToggle={() => toggle(entry.id)}
-          />
-        ))}
-      </div>
-    </section>
-  )
+  isOpen(id: string): boolean {
+    return this.openId() === id
+  }
 }
 ```
 
 ---
 
-### File: `src/components/Experience/Experience.module.css`
+### File: `src/app/components/experience/experience.component.html`
+
+```html
+<section id="experience" class="experience">
+  <span class="label">02 / EXPERIENCE</span>
+  <h2 class="heading">Career Journey</h2>
+
+  <boneyard-skeleton name="experience" [loading]="isLoading()" animate="shimmer" [transition]="300">
+    <div class="timeline">
+      @for (entry of experience; track entry.id) {
+        <article
+          class="entry"
+          [class.open]="isOpen(entry.id)"
+          (click)="toggle(entry.id)"
+          [attr.aria-expanded]="isOpen(entry.id)"
+        >
+          <div class="dot" aria-hidden="true">
+            <div class="dot-inner"></div>
+          </div>
+
+          <div class="content">
+            <time class="period">{{ entry.period }}</time>
+            <h3 class="role">{{ entry.role }}</h3>
+            <p class="company">{{ entry.company }}</p>
+
+            <div class="tags">
+              @for (tag of entry.tags; track tag) {
+                <span class="tag">{{ tag }}</span>
+              }
+            </div>
+
+            @if (entry.imageUrl) {
+              <div class="entry-image-wrap" [class.visible]="isOpen(entry.id)">
+                <img
+                  [src]="entry.imageUrl"
+                  [alt]="entry.company + ' — ' + entry.role"
+                  class="entry-image"
+                  loading="lazy"
+                />
+              </div>
+            }
+
+            <div class="description" [class.open]="isOpen(entry.id)">
+              <p>{{ entry.description }}</p>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </boneyard-skeleton>
+</section>
+```
+
+---
+
+### File: `src/app/components/experience/experience.component.scss`
 
 Key styles:
 
 - `.experience` — `padding: var(--section-padding); max-width: var(--max-width); margin: 0 auto`
-- `.timeline` — `position: relative; padding-left: var(--space-8)` with a `::before` pseudo-element for the vertical line:
-  ```css
+- `.timeline` — `position: relative; padding-left: var(--space-8)` with `::before` vertical line:
+  ```scss
   .timeline::before {
     content: '';
     position: absolute;
@@ -122,40 +161,53 @@ Key styles:
   }
   ```
 - `.entry` — `position: relative; padding: var(--space-6) var(--space-8); cursor: pointer; border-radius: var(--radius-md); transition: background var(--duration-base) var(--ease-out-expo)`
-  - On hover: `background: var(--color-surface)`
-- `.dot` — `position: absolute; left: calc(-1 * var(--space-8)); top: var(--space-6); width: 14px; height: 14px; display: flex; align-items: center; justify-content: center`
-- `.dotInner` — `width: 8px; height: 8px; border-radius: 50%; background: var(--color-text-muted); transition: all var(--duration-base)`
-  - `.open .dotInner` — `background: var(--color-accent); box-shadow: 0 0 12px var(--color-accent)`
-- `.period` — monospace, muted, `font-size: var(--text-xs)`
-- `.role` — `font-size: var(--text-lg); font-weight: 600; color: var(--color-text)`
+  - `&:hover` — `background: var(--color-surface)`
+- `.dot` / `.dot-inner` — circle on the timeline line; `.open .dot-inner` — `background: var(--color-accent); box-shadow: 0 0 12px var(--color-accent)`
+- `.period` — `font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted)`
+- `.role` — `font-size: var(--text-lg); font-weight: 600`
 - `.company` — `color: var(--color-accent); font-size: var(--text-sm)`
-- `.tags` — `display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3)`
-- `.tag` — `background: var(--color-tag-bg); color: var(--color-tag-text); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 2px var(--space-3); font-family: var(--font-mono); font-size: var(--text-xs)`
-- `.description` — `max-height: 0; overflow: hidden; transition: max-height var(--duration-slow) var(--ease-out-expo), opacity var(--duration-base)` — opacity 0 when closed
-- `.descriptionOpen` — `max-height: 400px; opacity: 1`
+- `.tag` — monospace pill with `var(--color-tag-bg)` and `var(--color-tag-text)`
+- `.entry-image-wrap` — `max-height: 0; overflow: hidden; transition: max-height var(--duration-slow) var(--ease-out-expo); margin-top: var(--space-4)`
+  - `.visible` — `max-height: 400px`
+- `.entry-image` — `width: 100%; border-radius: var(--radius-md); border: 1px solid var(--color-border); object-fit: cover; max-height: 240px`
+- `.description` — `max-height: 0; overflow: hidden; opacity: 0; transition: max-height var(--duration-slow) var(--ease-out-expo), opacity var(--duration-base)`
+  - `.open` — `max-height: 600px; opacity: 1`
+
+---
+
+## Boneyard Skeleton Setup
+
+After building the component, run Boneyard's CLI once to capture the skeleton:
+
+```bash
+npx boneyard-js build
+```
+
+This visits `http://localhost:4200`, finds `<boneyard-skeleton name="experience">`, snapshots its layout at 375/768/1280px, and writes `src/bones/experience.bones.json`.
+
+Import the registry once in `src/main.ts`:
+```typescript
+import './bones/registry'
+```
 
 ---
 
 ## Scroll Animation (GSAP ScrollTrigger)
-Each `.entry` animates in as it enters the viewport:
-- `x: -30 → 0`, `opacity: 0 → 1`
-- Staggered by `0.1s` between entries
-- Start trigger: `"top 85%"`
+After skeleton fades out, each `.entry` animates in:
+- `x: -30 → 0`, `opacity: 0 → 1`, stagger `0.1s`, trigger `"top 85%"`
 
----
-
-## Grouping (Optional Enhancement)
-If the experience list gets long, group entries by company (CJIB has 3 entries). Use a collapsible company header. Implement only if it improves clarity.
+Use `ScrollTrigger.create` inside a `ngAfterViewInit` and clean up in `ngOnDestroy`.
 
 ---
 
 ## Acceptance Criteria
-- [ ] All experience entries from `experience.json` render in order
-- [ ] Clicking an entry expands/collapses the description with a smooth animation
-- [ ] The first entry is open by default
+- [ ] All experience entries from `experience.json` render
+- [ ] Boneyard skeleton shimmer shows for ~600ms, then fades to real content
+- [ ] `src/bones/experience.bones.json` exists after running `npx boneyard-js build`
+- [ ] Clicking an entry expands/collapses description with smooth height transition
+- [ ] Entry image shows/hides when entry is opened (only if `imageUrl` is set)
+- [ ] First entry is open by default
 - [ ] Timeline vertical line renders correctly
-- [ ] Dots glow on the active/open entry
-- [ ] Tags render in monospace with accent color
 - [ ] GSAP ScrollTrigger entrance animation fires correctly
 - [ ] Section has `id="experience"` for nav anchor
 - [ ] Responsive: readable on 375px mobile width

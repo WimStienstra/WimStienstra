@@ -1,7 +1,7 @@
 # Step 10 — Deployment (GitHub Actions → GitHub Pages)
 
 ## Objective
-Configure automatic deployment of the portfolio to GitHub Pages using GitHub Actions. Every push to `main` triggers a production build and deploys the `dist/` folder. The custom domain `wimstienstra.nl` is configured.
+Configure automatic deployment of the Angular portfolio to GitHub Pages using GitHub Actions. Every push to `main` triggers a production build and deploys the output folder. The custom domain `wimstienstra.nl` is configured.
 
 ---
 
@@ -43,13 +43,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: Build Angular app
         run: npm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: dist/wimstienstra/browser
 
   deploy:
     environment:
@@ -63,6 +63,8 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
+> **Angular output path:** Angular 17+ with the new esbuild builder outputs to `dist/<project>/browser/`. Confirm the exact path by checking the `outputPath` in `angular.json` under `projects.wimstienstra.architect.build.options`. Adjust the `path:` in the workflow if needed.
+
 ---
 
 ### `public/CNAME`
@@ -73,7 +75,32 @@ For the custom domain `wimstienstra.nl`:
 wimstienstra.nl
 ```
 
-> **Note:** GitHub Pages also needs the domain configured in the repo settings: *Settings → Pages → Custom domain → `wimstienstra.nl`*
+> GitHub Pages also needs the domain configured in the repo settings: *Settings → Pages → Custom domain → `wimstienstra.nl`*
+
+---
+
+### `angular.json` — Confirm Base Href & Output Path
+
+Under `projects.wimstienstra.architect.build.options`:
+
+```json
+{
+  "baseHref": "/",
+  "outputPath": "dist/wimstienstra"
+}
+```
+
+For the production configuration, ensure `outputHashing` is `"all"` for long-term cache busting:
+
+```json
+{
+  "configurations": {
+    "production": {
+      "outputHashing": "all"
+    }
+  }
+}
+```
 
 ---
 
@@ -89,77 +116,21 @@ In the DNS settings for `wimstienstra.nl`, add these records:
 | A | `@` | `185.199.111.153` |
 | CNAME | `www` | `wimstienstra.github.io` |
 
-GitHub will automatically provision an HTTPS certificate (Let's Encrypt) once the DNS propagates (can take up to 24h).
-
----
-
-### `vite.config.js` — Confirm Base Path
-
-With the custom domain (`wimstienstra.nl`), the site is served from the root, so `base` should be `'/'`:
-
-```js
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-export default defineConfig({
-  base: '/',
-  plugins: [react()],
-  build: {
-    outDir: 'dist',
-    sourcemap: false,
-  },
-})
-```
+GitHub will automatically provision an HTTPS certificate (Let's Encrypt) once DNS propagates (up to 24h).
 
 ---
 
 ## GitHub Repository Settings
 
-Enable GitHub Pages with Actions as the source:
-1. Go to the repository *Settings → Pages*
+1. Go to *Settings → Pages*
 2. Under *Build and deployment → Source*, select **GitHub Actions**
 3. Add the custom domain `wimstienstra.nl` and check *Enforce HTTPS*
 
 ---
 
-## Verify Deployment
-
-After the first successful workflow run:
-1. Open `https://wimstienstra.nl` — site loads
-2. Open `https://www.wimstienstra.nl` — redirects to apex domain
-3. Check HTTPS certificate is valid (padlock in browser)
-4. Test all anchor links (`#about`, `#experience`, `#projects`, `#skills`, `#contact`)
-5. Test on mobile (Chrome DevTools responsive mode: iPhone 14, Pixel 7)
-
----
-
-## Performance Targets
-
-After deployment, run a Lighthouse audit (`lighthouse https://wimstienstra.nl`):
-
-| Metric | Target |
-|--------|--------|
-| Performance | ≥ 90 |
-| Accessibility | ≥ 90 |
-| Best Practices | ≥ 90 |
-| SEO | ≥ 90 |
-
-Typical optimisations already covered by Vite:
-- Tree-shaking (unused code removed)
-- CSS Modules (no unused CSS)
-- Asset hashing (long-term cache)
-
-Additional quick wins:
-- Add `<meta>` tags in `index.html` (OG tags, description, viewport)
-- Add `robots.txt` in `public/`
-- Add a `sitemap.xml` in `public/` (optional but helps SEO)
-- Set `loading="lazy"` on the avatar `<img>` in About
-
----
-
 ## `index.html` Meta Tags
 
-Update the existing `index.html` with proper meta tags:
+Update `src/index.html` with proper meta tags:
 
 ```html
 <head>
@@ -173,6 +144,10 @@ Update the existing `index.html` with proper meta tags:
   <meta property="og:type" content="website" />
   <link rel="canonical" href="https://wimstienstra.nl" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 ```
 
@@ -180,19 +155,55 @@ Update the existing `index.html` with proper meta tags:
 
 ## Favicon
 
-Create a minimal SVG favicon at `public/favicon.svg`:
-- "WS" monogram in `JetBrains Mono`, accent color on dark background
-- Or a simple geometric mark using the accent color `#4af0c8`
+Create `public/favicon.svg`:
+- "WS" monogram in JetBrains Mono, accent color `#4af0c8` on dark navy `#080d1a` background
+- Or a minimal geometric mark using the accent color
+
+---
+
+## Performance Targets
+
+After deployment, run a Lighthouse audit:
+
+| Metric | Target |
+|--------|--------|
+| Performance | ≥ 90 |
+| Accessibility | ≥ 90 |
+| Best Practices | ≥ 90 |
+| SEO | ≥ 90 |
+
+Angular-specific optimisations included by default:
+- Tree-shaking (dead code removed)
+- Lazy loading (standalone components load on demand if routing is added later)
+- Asset hashing (long-term cache)
+- esbuild bundler (fast, small output)
+
+Quick wins:
+- Add `loading="lazy"` on all `<img>` below the fold (already in plans for each section)
+- Ensure `public/robots.txt` exists
+- Add `public/sitemap.xml` (optional but helps SEO)
+
+---
+
+## Verify Deployment
+
+After the first successful workflow run:
+1. Open `https://wimstienstra.nl` — site loads
+2. Open `https://www.wimstienstra.nl` — redirects to apex domain
+3. Check HTTPS padlock is valid
+4. Test all anchor links (`#about`, `#experience`, `#projects`, `#skills`, `#hobbies`, `#contact`)
+5. Test on mobile (Chrome DevTools: iPhone 14, Pixel 7)
 
 ---
 
 ## Acceptance Criteria
 - [ ] `.github/workflows/deploy.yml` exists and is valid YAML
 - [ ] `public/CNAME` contains `wimstienstra.nl`
+- [ ] `angular.json` has `baseHref: "/"` and correct output path
 - [ ] Pushing to `main` triggers the workflow (visible in Actions tab)
 - [ ] Workflow completes successfully (build + deploy jobs green)
+- [ ] Output path in the workflow matches the Angular build output
 - [ ] Site is live at `https://wimstienstra.nl`
 - [ ] HTTPS is enforced
-- [ ] Lighthouse Performance score ≥ 90
-- [ ] `index.html` has all required meta tags
+- [ ] `index.html` has all required meta tags and Google Fonts preconnect
 - [ ] Favicon is visible in browser tab

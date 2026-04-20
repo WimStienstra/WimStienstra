@@ -1,7 +1,7 @@
 # Step 04 — Hero Section (Pretext Kinetic Typography)
 
 ## Objective
-Build the most visually striking section of the site: a full-viewport hero featuring Wim's name rendered with `@chenglou/pretext` for kinetic, cursor-reactive text layout, layered over the animated grid background.
+Build the most visually striking section of the site: a full-viewport hero featuring display text rendered with `@chenglou/pretext` for kinetic, cursor-reactive layout, layered over the animated grid background. Built as an Angular 19 standalone component.
 
 ---
 
@@ -30,149 +30,177 @@ The large display text ("FRONTEND DEVELOPER") uses Pretext to flow and reflow ar
 
 ## Implementation
 
-### File: `src/components/Hero/Hero.jsx`
+### File: `src/app/components/hero/hero.component.ts`
 
-#### Step 1 — Pretext canvas setup
-Pretext works by measuring text on a hidden Canvas element and computing line breaks in pure math. The hero renders the large heading on a real `<canvas>` element (not DOM text) for maximum creative control, or uses the DOM approach with calculated offsets.
-
-**Recommended approach for this hero: DOM + Pretext measurements**
-- Use Pretext's `prepare()` + `layout()` to calculate how the text wraps at the current container width
-- Render each word as a `<span>` positioned with CSS `transform: translate(x, y)` driven by Pretext's computed positions
-- On `mousemove`, update a "repulsion point" and re-run `layout()` with a custom `obstacles` array (Pretext supports this for obstacle-aware text flow)
-- Animate each word's position with `gsap.to()` for smooth interpolation
-
-```jsx
+```typescript
+import {
+  Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, NgZone
+} from '@angular/core'
 import { prepare, layout } from '@chenglou/pretext'
-import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
-import styles from './Hero.module.css'
 
 const HERO_TEXT = 'FRONTEND DEVELOPER'
 const FONT = 'bold 7rem Inter'
 
-export default function Hero() {
-  const containerRef = useRef(null)
-  const wordRefs = useRef([])
-  const preparedRef = useRef(null)
+@Component({
+  selector: 'app-hero',
+  standalone: true,
+  templateUrl: './hero.component.html',
+  styleUrl: './hero.component.scss',
+})
+export class HeroComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('heroContainer') containerRef!: ElementRef<HTMLElement>
 
-  useEffect(() => {
-    let cancelled = false
-    prepare(HERO_TEXT, FONT).then(prepared => {
-      if (!cancelled) preparedRef.current = prepared
+  readonly words = HERO_TEXT.split(' ')
+  wordEls: HTMLElement[] = []
+
+  private prepared: Awaited<ReturnType<typeof prepare>> | null = null
+  private mouseMoveListener!: (e: MouseEvent) => void
+
+  constructor(private ngZone: NgZone) {}
+
+  ngAfterViewInit(): void {
+    // Prepare Pretext outside Angular's change detection
+    this.ngZone.runOutsideAngular(() => {
+      prepare(HERO_TEXT, FONT).then(p => {
+        this.prepared = p
+        this.initMouseEffect()
+      })
+      this.playEntranceAnimation()
     })
-    return () => { cancelled = true }
-  }, [])
+  }
 
-  useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-
-    const onMouseMove = (e) => {
-      if (!preparedRef.current) return
+  private initMouseEffect(): void {
+    const el = this.containerRef.nativeElement
+    this.mouseMoveListener = (e: MouseEvent) => {
+      if (!this.prepared) return
       const rect = el.getBoundingClientRect()
       const mx = e.clientX - rect.left
       const my = e.clientY - rect.top
       // Re-layout with a circular obstacle at cursor position
-      const result = layout(preparedRef.current, rect.width, {
+      // Note: check the latest @chenglou/pretext API for the obstacles option
+      const result = layout(this.prepared, rect.width, {
         obstacles: [{ x: mx - 60, y: my - 60, width: 120, height: 120 }]
       })
-      // Animate each word span to its new computed position
-      result.lines.forEach((line, li) => {
-        line.words.forEach((word, wi) => {
-          const ref = wordRefs.current[li * 100 + wi]
+      result.lines?.forEach((line: any, li: number) => {
+        line.words?.forEach((word: any, wi: number) => {
+          const ref = this.wordEls[li * 100 + wi]
           if (ref) {
-            gsap.to(ref, {
-              x: word.x,
-              y: word.y,
-              duration: 0.4,
-              ease: 'power3.out'
-            })
+            gsap.to(ref, { x: word.x, y: word.y, duration: 0.4, ease: 'power3.out' })
           }
         })
       })
     }
+    el.addEventListener('mousemove', this.mouseMoveListener)
+  }
 
-    el.addEventListener('mousemove', onMouseMove)
-    return () => el.removeEventListener('mousemove', onMouseMove)
-  }, [])
+  private playEntranceAnimation(): void {
+    // Stagger words up on load
+    gsap.fromTo(
+      this.wordEls,
+      { y: 40, opacity: 0 },
+      { y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power3.out', delay: 0.2 }
+    )
+  }
 
-  const words = HERO_TEXT.split(' ')
-
-  return (
-    <section className={styles.hero} ref={containerRef}>
-      <div className={styles.pretextContainer}>
-        {words.map((word, i) => (
-          <span
-            key={word}
-            ref={el => wordRefs.current[i] = el}
-            className={styles.heroWord}
-          >
-            {word}
-          </span>
-        ))}
-      </div>
-
-      <div className={styles.meta}>
-        <h1 className={styles.name}>Wim Stienstra</h1>
-        <div className={styles.divider} />
-        <p className={styles.tagline}>Angular · Monorepo · AI-assisted development</p>
-        <div className={styles.cta}>
-          <a href="#projects" className={styles.ctaPrimary}>View Work ↓</a>
-          <a
-            href="https://www.linkedin.com/in/wimstienstra"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.ctaSecondary}
-          >
-            LinkedIn ↗
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.scrollHint}>
-        <span>scroll to explore</span>
-        <div className={styles.scrollLine} />
-      </div>
-    </section>
-  )
+  ngOnDestroy(): void {
+    const el = this.containerRef?.nativeElement
+    if (el && this.mouseMoveListener) {
+      el.removeEventListener('mousemove', this.mouseMoveListener)
+    }
+  }
 }
 ```
 
-> **Note:** Pretext's obstacle API may vary — check the latest `@chenglou/pretext` README. If the obstacle API is not available yet, implement the repulsion effect manually: on each `mousemove`, calculate each word's distance to the cursor and apply a `translate` offset proportional to `1/distance²`, animated with GSAP.
+---
+
+### File: `src/app/components/hero/hero.component.html`
+
+```html
+<section class="hero" #heroContainer>
+  <div class="pretext-container" aria-hidden="true">
+    @for (word of words; track word) {
+      <span class="hero-word" #wordEl>{{ word }}</span>
+    }
+  </div>
+
+  <div class="meta">
+    <h1 class="name">Wim Stienstra</h1>
+    <div class="divider"></div>
+    <p class="tagline">Angular · Monorepo · AI-assisted development</p>
+    <div class="cta">
+      <a href="#projects" class="cta-primary">View Work ↓</a>
+      <a
+        href="https://www.linkedin.com/in/wimstienstra"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="cta-secondary"
+      >LinkedIn ↗</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>scroll to explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+```
+
+> **Note on `@ViewChild` vs template refs for `wordEls`:** Use `@ViewChildren('wordEl')` with a `QueryList<ElementRef>` to collect word elements, then map them to `HTMLElement[]` in `ngAfterViewInit`. The `wordEls` array feeds into GSAP and Pretext layout updates.
+
+Update `HeroComponent` to use `@ViewChildren`:
+```typescript
+@ViewChildren('wordEl') wordElRefs!: QueryList<ElementRef<HTMLElement>>
+
+ngAfterViewInit(): void {
+  this.wordEls = this.wordElRefs.map(r => r.nativeElement)
+  // ... rest of init
+}
+```
 
 ---
 
-### File: `src/components/Hero/Hero.module.css`
+### File: `src/app/components/hero/hero.component.scss`
 
 Key styles:
-- `.hero` — `min-height: 100svh`, `display: grid`, centered content, `position: relative`, `overflow: hidden`
-- `.pretextContainer` — large, full-width text container, `position: relative`, `height: ~40vh`
-- `.heroWord` — `position: absolute`, `font-size: var(--text-hero)`, `font-weight: 900`, `color: var(--color-text)`, `will-change: transform`
-- `.name` — `font-size: var(--text-2xl)`, `color: var(--color-accent)`, `font-family: var(--font-mono)`
-- `.divider` — `width: 60px; height: 2px; background: var(--color-accent)`
-- `.ctaPrimary` — filled button with accent background
-- `.ctaSecondary` — ghost button with accent border
-- `.scrollLine` — thin vertical animated line (pulsing opacity) below "scroll to explore"
+- `.hero` — `min-height: 100svh; display: grid; align-content: center; position: relative; overflow: hidden`
+- `.pretext-container` — `position: relative; height: 40vh; width: 100%`
+- `.hero-word` — `position: absolute; font-size: var(--text-hero); font-weight: 900; color: var(--color-text); will-change: transform`
+- `.name` — `font-size: var(--text-2xl); color: var(--color-accent); font-family: var(--font-mono)`
+- `.divider` — `width: 60px; height: 2px; background: var(--color-accent); margin: var(--space-4) 0`
+- `.cta-primary` — filled button: `background: var(--color-accent); color: var(--color-bg); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-6); font-weight: 600; text-decoration: none`
+- `.cta-secondary` — ghost button: `border: 1px solid var(--color-accent); color: var(--color-accent); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-6); text-decoration: none`
+- `.scroll-line` — thin vertical animated pulsing line: `width: 1px; height: 40px; background: var(--color-accent); animation: pulse 2s ease-in-out infinite`
 
 ---
 
 ## Entrance Animation (GSAP)
-On mount, use `gsap.fromTo` to animate:
-1. The Pretext text block slides up from below (`y: 40 → 0`) with a stagger on each word
-2. `.name`, `.divider`, `.tagline`, `.cta` fade in sequentially after the big text finishes
+On `ngAfterViewInit`:
+1. Word elements slide up from `y: 40 → 0` with stagger
+2. `.meta` children (`.name`, `.divider`, `.tagline`, `.cta`) fade in sequentially after
 
 ---
 
-## Fallback (no JS / accessibility)
-The semantic `<h1>` with Wim's name must always be in the DOM (not canvas). The Pretext canvas is `aria-hidden="true"`. Screen readers see the heading correctly.
+## Fallback (Accessibility)
+The semantic `<h1 class="name">Wim Stienstra</h1>` is always in the DOM. The Pretext `<div class="pretext-container">` has `aria-hidden="true"`. Screen readers read the heading correctly.
+
+---
+
+## Pretext Obstacle API Note
+Check the latest `@chenglou/pretext` npm README for the exact `layout()` API signature. If the `obstacles` option is not yet in the published version, implement the repulsion manually:
+- On each `mousemove`, iterate over `this.wordEls`
+- Calculate each word's distance to the cursor
+- Apply a `translate` offset proportional to `1 / distance²`
+- Animate with `gsap.to(el, { x, y, duration: 0.4 })`
 
 ---
 
 ## Acceptance Criteria
 - [ ] Full-viewport hero renders without layout shift
 - [ ] Pretext library initialises and measures the hero text
-- [ ] Moving the cursor over the hero causes the large text to dynamically reflow/repulse
+- [ ] Moving cursor over hero causes text to dynamically reflow/repulse
 - [ ] GSAP entrance animation plays on page load
 - [ ] `<h1>Wim Stienstra</h1>` is present for screen readers
 - [ ] CTA buttons scroll to `#projects` and open LinkedIn correctly
-- [ ] Hero looks correct on mobile (≥ 375px) — Pretext effect degrades gracefully (or is disabled) on touch devices
+- [ ] Mouse listener is removed in `ngOnDestroy` (no memory leaks)
+- [ ] Hero looks correct on mobile (≥ 375px) — Pretext effect disabled on touch devices
