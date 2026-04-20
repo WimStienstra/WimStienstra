@@ -1,0 +1,80 @@
+[
+  {
+    "id": "expo-monorepo",
+    "title": "EXPO — Angular Monorepo Platform",
+    "description": "Angular-based monorepo platform at the CJIB unifying enforcement applications and legacy systems into a single web application. Focus on scalability, consistency, and long-term maintainability.",
+    "tags": [
+      "Angular",
+      "NX",
+      "TypeScript",
+      "Monorepo"
+    ],
+    "type": "Professional",
+    "imageUrl": "",
+    "featured": true
+  },
+  {
+    "id": "digitaal-loket",
+    "title": "Digitaal Loket Verkeer — Rearchitecture",
+    "description": "Re-architecture of the Openbaar Ministerie's traffic portal: introduced NX monorepo and domain-driven design, reducing legacy coupling and enabling future OM application integration.",
+    "tags": [
+      "Angular",
+      "NX",
+      "Domain-Driven Design"
+    ],
+    "type": "Professional",
+    "imageUrl": "",
+    "featured": true
+  },
+  {
+    "id": "jip-snel",
+    "title": "Jip Snel — Hybrid AI Chatbot",
+    "description": "A Friday-afternoon project turned working prototype: a Google Dialogflow + Google Assistant chatbot with a live human operator handover system via a third-party frontend.",
+    "tags": [
+      "Google Dialogflow",
+      "Google Assistant",
+      "Bot-Human Hybrid"
+    ],
+    "type": "Personal",
+    "imageUrl": "/assets/experience/jip-snel.jpg",
+    "featured": true
+  },
+  {
+    "id": "game-jam",
+    "title": "The Shadow of What I Once Was",
+    "description": "Pirate Software Game Jam 15 entry. A game built under time pressure, exploring game development as a creative outlet.",
+    "tags": [
+      "Godot",
+      "GDScript",
+      "Pixel Art",
+      "Game Dev"
+    ],
+    "type": "Personal",
+    "imageUrl": "/assets/hobbies/game-jam-screenshot.jpg",
+    "featured": false
+  },
+  {
+    "id": "ibc-dashboard",
+    "title": "IBC Dashboard",
+    "description": "A real-time data overview dashboard for Comecer, independently designed and built with Angular + Node.js using the existing Firebird database.",
+    "tags": [
+      "Angular",
+      "Node.js",
+      "Firebird"
+    ],
+    "type": "Professional",
+    "imageUrl": "",
+    "featured": false
+  },
+  {
+    "id": "quiz-museum",
+    "title": "Quiz Modelspoorwegmuseum",
+    "description": "Interactive quiz application built for a Dutch model railway museum as a study project.",
+    "tags": [
+      "Web Development"
+    ],
+    "type": "Study",
+    "imageUrl": "",
+    "featured": false
+  }
+]

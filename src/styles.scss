@@ -1,0 +1,43 @@
+// =============================================================================
+// GLOBAL STYLES — Biomorphic Glassmorphism Design System
+// Import order matters: tokens first, then reset, then everything else.
+// =============================================================================
+
+// 1. Design tokens (CSS custom properties)
+@use 'styles/tokens';
+
+// 2. Reset + base element styles
+@use 'styles/reset';
+
+// 3. Typography
+@use 'styles/typography';
+
+// 4. Component utilities
+@use 'styles/glassmorphism';
+@use 'styles/biomorphic';
+@use 'styles/animations';
+@use 'styles/utilities';
+@use 'styles/buttons';
+@use 'styles/tags';
+
+// ---------------------------------------------------------------------------
+// Custom Scrollbar — warm caramel tones
+// ---------------------------------------------------------------------------
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-surface-warm);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-caramel-light);
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--color-bg-surface-warm);
+
+  &:hover {
+    background: var(--color-caramel);
+  }
+}

@@ -1,0 +1,81 @@
+// =============================================================================
+// TYPOGRAPHY — Font loading + fluid type scale
+// =============================================================================
+
+// Google Fonts — DM Sans (display), Inter (body), JetBrains Mono (code)
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+// Base headings
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+h1 {
+  font-size: var(--text-3xl);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+}
+
+h3 {
+  font-size: var(--text-xl);
+}
+
+h4 {
+  font-size: var(--text-lg);
+}
+
+h5,
+h6 {
+  font-size: var(--text-base);
+}
+
+p {
+  max-width: var(--max-width-text);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+// Eyebrow label (small caps, spaced)
+.text-eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-sage-dark);
+}
+
+// Display — largest hero text
+.text-display {
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
+  font-weight: 800;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+// Code / monospace
+code,
+pre,
+.text-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+}
+
+// Muted / tertiary text
+.text-muted {
+  color: var(--color-text-tertiary);
+  font-size: var(--text-sm);
+}

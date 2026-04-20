@@ -1,0 +1,88 @@
+// =============================================================================
+// ANIMATIONS — Keyframes for scroll reveals, transitions, shimmer
+// =============================================================================
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes warm-pulse {
+
+  0%,
+  100% {
+    box-shadow: var(--shadow-glow-soft);
+  }
+
+  50% {
+    box-shadow: var(--shadow-glow-medium);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+// Utility animation classes
+.animate-fade-up {
+  animation: fade-up var(--duration-slow) var(--ease-out-expo) both;
+}
+
+.animate-fade-in {
+  animation: fade-in var(--duration-base) var(--ease-out-expo) both;
+}
+
+.animate-scale-in {
+  animation: scale-in var(--duration-base) var(--ease-bounce) both;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}

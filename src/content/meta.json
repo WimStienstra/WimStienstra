@@ -1,0 +1,16 @@
+{
+  "name": "Wim Stienstra",
+  "title": "Frontend Developer",
+  "taglines": [
+    "Angular Monorepo Architect",
+    "AI-Assisted Developer",
+    "UX & Frontend Engineering"
+  ],
+  "email": "w.j.stienstra@hotmail.com",
+  "linkedin": "https://www.linkedin.com/in/wimstienstra",
+  "github": "https://github.com/WimStienstra",
+  "location": "Leeuwarden, Friesland, Netherlands",
+  "cvUrl": "/assets/cv-wim-stienstra.pdf",
+  "about": "Frontend developer with a focus on scalable architecture, user-friendly interfaces, and future-proof solutions. I work at the CJIB on an Angular monorepo platform (EXPO) that unifies new and legacy systems. I care deeply about engineering, structure, and UX working in harmony. I actively explore AI-assisted development — not as a shortcut, but as a tool that requires intentional and skilled use.",
+  "avatarUrl": "/assets/avatar.jpg"
+}

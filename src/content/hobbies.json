@@ -1,0 +1,89 @@
+[
+  {
+    "id": "game-mods",
+    "title": "Game Modding",
+    "icon": "🎮",
+    "description": "I create mods for games I love. From quality-of-life tweaks to larger content additions — modding scratches the same engineering itch as software development, but with immediate creative payoff.",
+    "media": [
+      {
+        "type": "image",
+        "url": "/assets/hobbies/rimworld-mod-1.jpg",
+        "caption": "RimWorld mod — custom colonist behaviour system"
+      },
+      {
+        "type": "image",
+        "url": "/assets/hobbies/rimworld-mod-2.jpg",
+        "caption": "RimWorld mod — UI redesign"
+      },
+      {
+        "type": "image",
+        "url": "/assets/hobbies/blade-sorcery-mod-1.jpg",
+        "caption": "Blade & Sorcery — custom weapon mod"
+      }
+    ],
+    "links": [
+      {
+        "label": "Nexus Mods Profile",
+        "url": "https://www.nexusmods.com/users/YOUR_ID"
+      }
+    ]
+  },
+  {
+    "id": "drone",
+    "title": "Drone Flying & Videography",
+    "icon": "🚁",
+    "description": "I hold a ROC Light drone licence (EuroUSC). I fly and edit cinematic drone footage of Frisian landscapes, travel destinations, and aerial photography. Patience, precision, and a good eye for composition translate directly into my UX work.",
+    "media": [
+      {
+        "type": "image",
+        "url": "/assets/hobbies/drone-friesland-1.jpg",
+        "caption": "Aerial view of the Frisian lakes"
+      },
+      {
+        "type": "image",
+        "url": "/assets/hobbies/drone-travel-1.jpg",
+        "caption": "Travel vlog footage — mountains"
+      },
+      {
+        "type": "video",
+        "url": "/assets/hobbies/drone-reel.mp4",
+        "poster": "/assets/hobbies/drone-reel-poster.jpg",
+        "caption": "Drone reel 2024"
+      }
+    ],
+    "links": []
+  },
+  {
+    "id": "music",
+    "title": "Music Production",
+    "icon": "🎵",
+    "description": "I produce electronic music as a creative outlet — arranging, sound design, and mixing. Like coding, it's about building something layered and coherent from individual parts.",
+    "media": [
+      {
+        "type": "image",
+        "url": "/assets/hobbies/music-studio.jpg",
+        "caption": "Home studio setup"
+      }
+    ],
+    "links": []
+  },
+  {
+    "id": "game-dev",
+    "title": "Game Development",
+    "icon": "👾",
+    "description": "I make games in Godot with GDScript, exploring pixel art and mechanics design. My Pirate Software Game Jam 15 entry 'The Shadow of What I Once Was' was built solo under a 72-hour deadline.",
+    "media": [
+      {
+        "type": "image",
+        "url": "/assets/hobbies/game-jam-screenshot.jpg",
+        "caption": "The Shadow of What I Once Was — Game Jam 15 entry"
+      }
+    ],
+    "links": [
+      {
+        "label": "Game Jam Entry",
+        "url": "https://itch.io/YOUR_ENTRY"
+      }
+    ]
+  }
+]

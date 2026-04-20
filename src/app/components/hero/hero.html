@@ -1,0 +1,31 @@
+<section id="hero" class="hero" #heroSection>
+  <!-- Decorative blobs -->
+  <div class="blob blob--sunset" aria-hidden="true" role="presentation"></div>
+  <div class="blob blob--sage" aria-hidden="true" role="presentation"></div>
+
+  <!-- Kinetic display text (aria-hidden — h1 below is the accessible heading) -->
+  <div class="hero-display" aria-hidden="true">
+    @for (word of displayWords; track word) {
+    <span class="hero-word" #wordEl>{{ word }}</span>
+    }
+  </div>
+
+  <!-- Semantic content -->
+  <div class="hero-meta">
+    <h1 class="hero-name">{{ meta.name }}</h1>
+    <div class="hero-divider" aria-hidden="true"></div>
+    <p class="hero-tagline">Angular &middot; Monorepo &middot; AI-assisted development</p>
+    <nav class="hero-cta" aria-label="Primary actions">
+      <a href="#projects" class="btn-primary" (pointerdown)="onCtaClick('primary')">View Work</a>
+      <a [href]="meta.linkedin" target="_blank" rel="noopener noreferrer" class="btn-secondary"
+        (pointerdown)="onCtaClick('secondary')">LinkedIn &#8599;</a>
+      <a [href]="meta.cvUrl" class="btn-tertiary" download>Download CV</a>
+    </nav>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span class="hero-scroll-label">scroll to explore</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>

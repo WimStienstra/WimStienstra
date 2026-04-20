@@ -1,0 +1,111 @@
+// =============================================================================
+// UTILITIES — Helper classes and layout utilities
+// =============================================================================
+
+// Screen reader only (visually hidden, accessible)
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Visually hidden but shows on focus (skip links)
+.sr-only-focusable {
+  @extend .sr-only;
+
+  &:focus,
+  &:active {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+}
+
+// Layout container
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+
+  @media (min-width: 768px) {
+    padding-inline: var(--space-8);
+  }
+}
+
+// Section spacing
+.section {
+  padding-block: var(--space-24);
+}
+
+.section--sm {
+  padding-block: var(--space-16);
+}
+
+// Divider
+.divider {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  margin-block: var(--space-8);
+}
+
+// Text utilities
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+// Display utilities
+.flex {
+  display: flex;
+}
+
+.grid {
+  display: grid;
+}
+
+.hidden {
+  display: none;
+}
+
+// Gap utilities
+.gap-2 {
+  gap: var(--space-2);
+}
+
+.gap-4 {
+  gap: var(--space-4);
+}
+
+.gap-6 {
+  gap: var(--space-6);
+}
+
+.gap-8 {
+  gap: var(--space-8);
+}
+
+// Relative positioning helper for blob parents
+.relative {
+  position: relative;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}

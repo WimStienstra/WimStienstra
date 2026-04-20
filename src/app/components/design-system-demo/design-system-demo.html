@@ -1,0 +1,232 @@
+<main id="main-content">
+  <!-- Skip link -->
+  <a href="#main-content" class="sr-only-focusable">Skip to main content</a>
+
+  <!-- Hero Banner -->
+  <section class="demo-hero" aria-labelledby="demo-title">
+    <div class="demo-hero__blobs" aria-hidden="true">
+      <app-blob-background color="sunset" size="500px" top="-100px" right="-100px" />
+      <app-blob-background color="sage" size="350px" bottom="-80px" left="-80px" />
+      <app-blob-background color="caramel" size="300px" top="40%" left="40%" />
+    </div>
+    <div class="container demo-hero__content">
+      <p class="text-eyebrow">Design System</p>
+      <h1 id="demo-title" class="text-display">Biomorphic<br />Glassmorphism</h1>
+      <p class="demo-hero__subtitle">
+        Warm earth tones · Mid-century modern · Evening glow accents
+      </p>
+      <div class="demo-hero__actions">
+        <app-button variant="primary" label="Primary CTA" />
+        <app-button variant="secondary" label="Secondary" />
+        <app-button variant="tertiary" label="Tertiary" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Color Palette -->
+  <section class="section container" aria-labelledby="colors-heading">
+    <app-section-header eyebrow="Foundation" heading="Color Palette"
+      description="Warm earth tones drawn from Wim's home — caramel furniture, sage office wall, oker plants, evening lamp glow."
+      id="colors-heading" />
+
+    <div class="demo-swatches" role="list" aria-label="Color swatches">
+      @for (color of colors; track color.name) {
+      <div class="demo-swatch" role="listitem">
+        <div class="demo-swatch__chip" [style.background-color]="color.value"
+          [class.demo-swatch__chip--bordered]="color.name.startsWith('bg')" aria-hidden="true"></div>
+        <p class="demo-swatch__label">{{ color.label }}</p>
+        <p class="text-muted demo-swatch__value">{{ color.value }}</p>
+      </div>
+      }
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section class="section container" aria-labelledby="typography-heading">
+    <app-section-header eyebrow="Typography" heading="Type Scale"
+      description="DM Sans for display, Inter for body, JetBrains Mono for code. All fluid via CSS clamp."
+      id="typography-heading" />
+
+    <div class="demo-type-scale">
+      <div class="demo-type-row">
+        <span class="text-muted demo-type-label">Display / Hero</span>
+        <span class="text-display demo-type-sample">Wim Stienstra</span>
+      </div>
+      <div class="demo-type-row">
+        <span class="text-muted demo-type-label">Heading 1</span>
+        <h1 class="demo-type-sample">Frontend Architect</h1>
+      </div>
+      <div class="demo-type-row">
+        <span class="text-muted demo-type-label">Heading 2</span>
+        <h2 class="demo-type-sample">About Me</h2>
+      </div>
+      <div class="demo-type-row">
+        <span class="text-muted demo-type-label">Heading 3</span>
+        <h3 class="demo-type-sample">Work Experience</h3>
+      </div>
+      <div class="demo-type-row">
+        <span class="text-muted demo-type-label">Body</span>
+        <p>
+          Building scalable Angular applications with a focus on clean architecture,
+          accessible interfaces, and developer experience. Based in the Netherlands.
+        </p>
+      </div>
+      <div class="demo-type-row">
+        <span class="text-muted demo-type-label">Eyebrow</span>
+        <span class="text-eyebrow">Open to new opportunities</span>
+      </div>
+      <div class="demo-type-row">
+        <span class="text-muted demo-type-label">Code</span>
+        <code>ng generate component shared/glass-card</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- Glass Cards — rich background so backdrop-filter is visible -->
+  <section class="section demo-glass-section" aria-labelledby="glass-heading">
+    <div class="demo-glass-bg" aria-hidden="true">
+      <div class="demo-glass-bg__blob demo-glass-bg__blob--sunset"></div>
+      <div class="demo-glass-bg__blob demo-glass-bg__blob--oker"></div>
+      <div class="demo-glass-bg__blob demo-glass-bg__blob--sage"></div>
+      <div class="demo-glass-bg__blob demo-glass-bg__blob--caramel"></div>
+    </div>
+    <div class="container demo-glass-section__inner">
+      <app-section-header eyebrow="Components" heading="Glass Cards"
+        description="Glassmorphism on a rich warm background — caramel, sage, and sunset glow variants."
+        id="glass-heading" />
+
+      <div class="demo-cards-grid">
+        <app-glass-card variant="warm">
+          <div class="demo-card-content">
+            <p class="text-eyebrow">Warm Caramel</p>
+            <h3>Glass Card</h3>
+            <p>Caramel-tinted glass with soft backdrop blur. Used for project cards, experience entries.</p>
+            <div class="demo-card-tags">
+              <app-badge variant="sage" label="Angular" />
+              <app-badge variant="caramel" label="SCSS" />
+            </div>
+          </div>
+        </app-glass-card>
+
+        <app-glass-card variant="sage">
+          <div class="demo-card-content">
+            <p class="text-eyebrow">Sage Tint</p>
+            <h3>Glass Sage</h3>
+            <p>Sage-tinted glass. Used for skill categories, active states, and feature highlights.</p>
+            <div class="demo-card-tags">
+              <app-badge variant="sage" label="TypeScript" />
+              <app-badge variant="oker" label="NX" />
+            </div>
+          </div>
+        </app-glass-card>
+
+        <app-glass-card variant="glow">
+          <div class="demo-card-content">
+            <p class="text-eyebrow">Sunset Glow</p>
+            <h3>Glass Glow</h3>
+            <p>Warm sunset-tinted glass. Used for featured items, CTAs, and evening atmosphere accents.</p>
+            <div class="demo-card-tags">
+              <app-badge variant="sunset" label="Featured" />
+              <app-badge variant="caramel" label="AI-assisted" />
+            </div>
+          </div>
+        </app-glass-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Buttons & Badges -->
+  <section class="section container" aria-labelledby="components-heading">
+    <app-section-header eyebrow="UI Components" heading="Buttons &amp; Badges" id="components-heading" />
+
+    <div class="demo-components-row">
+      <div class="demo-components-group">
+        <p class="text-eyebrow">Buttons</p>
+        <div class="demo-button-row">
+          <app-button variant="primary" label="Primary Button" />
+          <app-button variant="secondary" label="Secondary Button" />
+          <app-button variant="tertiary" label="Tertiary Button" />
+          <app-button variant="primary" label="Disabled" [disabled]="true" />
+        </div>
+      </div>
+
+      <div class="demo-components-group">
+        <p class="text-eyebrow">Badges &amp; Tags</p>
+        <div class="demo-tags-row">
+          @for (tag of tags; track tag) {
+          <app-badge [variant]="tag" [label]="tag | titlecase" />
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Animated Blobs -->
+  <section class="section demo-blobs-section" aria-labelledby="blobs-heading">
+    <div class="container">
+      <app-section-header eyebrow="Motion" heading="Biomorphic Blobs"
+        description="Organic shapes morphing infinitely. GPU-accelerated, respects prefers-reduced-motion."
+        align="center" id="blobs-heading" />
+
+      <div class="demo-blobs-showcase" aria-hidden="true">
+        <div class="demo-blob demo-blob--a"></div>
+        <div class="demo-blob demo-blob--b"></div>
+        <div class="demo-blob demo-blob--c"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form Elements -->
+  <section class="section container" aria-labelledby="forms-heading">
+    <app-section-header eyebrow="Forms" heading="Form Elements"
+      description="Accessible inputs with caramel focus rings, warm labels, and clear error states."
+      id="forms-heading" />
+
+    <div class="demo-form-grid">
+      <div class="demo-form-group">
+        <label for="demo-name" class="demo-label">
+          Full Name <span aria-label="required" class="demo-required">*</span>
+        </label>
+        <input id="demo-name" type="text" class="demo-input" placeholder="Wim Stienstra" aria-required="true" />
+      </div>
+
+      <div class="demo-form-group">
+        <label for="demo-email" class="demo-label">
+          Email Address <span aria-label="required" class="demo-required">*</span>
+        </label>
+        <input id="demo-email" type="email" class="demo-input demo-input--error" placeholder="wim@example.com"
+          aria-required="true" aria-invalid="true" aria-describedby="demo-email-error" />
+        <p id="demo-email-error" class="demo-error-msg" role="alert">
+          Please enter a valid email address.
+        </p>
+      </div>
+
+      <div class="demo-form-group demo-form-group--full">
+        <label for="demo-message" class="demo-label">Message</label>
+        <textarea id="demo-message" class="demo-input demo-textarea" rows="4"
+          placeholder="Tell me about your project..."></textarea>
+      </div>
+
+      <div class="demo-form-group demo-form-group--full">
+        <app-button variant="primary" label="Send Message" type="submit" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Spacing Reference -->
+  <section class="section container" aria-labelledby="spacing-heading">
+    <app-section-header eyebrow="Spacing" heading="Spacing Scale"
+      description="8px base scale. Design tokens used throughout — never hardcoded values." id="spacing-heading" />
+
+    <div class="demo-spacing-scale" aria-label="Spacing scale visualization">
+      @for (step of [1,2,3,4,6,8,12,16,24,32]; track step) {
+      <div class="demo-spacing-row">
+        <span class="text-muted demo-spacing-label">--space-{{ step }}</span>
+        <div class="demo-spacing-bar" [style.width]="'calc(var(--space-' + step + ') * 4)'"
+          [attr.aria-label]="'Space ' + step + ' token'"></div>
+        <span class="text-muted">{{ step * 4 }}px</span>
+      </div>
+      }
+    </div>
+  </section>
+</main>

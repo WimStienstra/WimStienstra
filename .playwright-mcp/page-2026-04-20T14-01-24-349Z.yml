@@ -1,0 +1,197 @@
+- main [ref=e4]:
+  - link "Skip to main content" [ref=e5] [cursor=pointer]:
+    - /url: "#main-content"
+  - region "Biomorphic Glassmorphism" [ref=e6]:
+    - generic [ref=e7]:
+      - paragraph [ref=e8]: Design System
+      - heading "Biomorphic Glassmorphism" [level=1] [ref=e9]:
+        - text: Biomorphic
+        - text: Glassmorphism
+      - paragraph [ref=e10]: Warm earth tones · Mid-century modern · Evening glow accents
+      - generic [ref=e11]:
+        - button "Primary CTA" [ref=e13] [cursor=pointer]
+        - button "Secondary" [ref=e15] [cursor=pointer]
+        - button "Tertiary" [ref=e17] [cursor=pointer]
+  - region "Foundation Color Palette Warm earth tones drawn from Wim's home — caramel furniture, sage office wall, oker plants, evening lamp glow." [ref=e18]:
+    - generic [ref=e20]:
+      - paragraph [ref=e21]: Foundation
+      - heading "Color Palette" [level=2] [ref=e22]
+      - paragraph [ref=e23]: Warm earth tones drawn from Wim's home — caramel furniture, sage office wall, oker plants, evening lamp glow.
+    - list "Color swatches" [ref=e24]:
+      - listitem [ref=e25]:
+        - paragraph [ref=e27]: Sage
+        - paragraph [ref=e28]: "#8a9a8d"
+      - listitem [ref=e29]:
+        - paragraph [ref=e31]: Caramel
+        - paragraph [ref=e32]: "#c19a6b"
+      - listitem [ref=e33]:
+        - paragraph [ref=e35]: Oker
+        - paragraph [ref=e36]: "#d4a54a"
+      - listitem [ref=e37]:
+        - paragraph [ref=e39]: Navy
+        - paragraph [ref=e40]: "#2d3e50"
+      - listitem [ref=e41]:
+        - paragraph [ref=e43]: Sunset
+        - paragraph [ref=e44]: "#ff8c42"
+      - listitem [ref=e45]:
+        - paragraph [ref=e47]: Amber
+        - paragraph [ref=e48]: "#ffb366"
+      - listitem [ref=e49]:
+        - paragraph [ref=e51]: Ember
+        - paragraph [ref=e52]: "#ff6b42"
+      - listitem [ref=e53]:
+        - paragraph [ref=e55]: Canvas
+        - paragraph [ref=e56]: "#f8f4ef"
+      - listitem [ref=e57]:
+        - paragraph [ref=e59]: Surface
+        - paragraph [ref=e60]: "#fdfbf7"
+      - listitem [ref=e61]:
+        - paragraph [ref=e63]: Surface Warm
+        - paragraph [ref=e64]: "#f0ebe3"
+  - region "Typography Type Scale DM Sans for display, Inter for body, JetBrains Mono for code. All fluid via CSS clamp." [ref=e65]:
+    - generic [ref=e67]:
+      - paragraph [ref=e68]: Typography
+      - heading "Type Scale" [level=2] [ref=e69]
+      - paragraph [ref=e70]: DM Sans for display, Inter for body, JetBrains Mono for code. All fluid via CSS clamp.
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - generic [ref=e73]: Display / Hero
+        - generic [ref=e74]: Wim Stienstra
+      - generic [ref=e75]:
+        - generic [ref=e76]: Heading 1
+        - heading "Frontend Architect" [level=1] [ref=e77]
+      - generic [ref=e78]:
+        - generic [ref=e79]: Heading 2
+        - heading "About Me" [level=2] [ref=e80]
+      - generic [ref=e81]:
+        - generic [ref=e82]: Heading 3
+        - heading "Work Experience" [level=3] [ref=e83]
+      - generic [ref=e84]:
+        - generic [ref=e85]: Body
+        - paragraph [ref=e86]: Building scalable Angular applications with a focus on clean architecture, accessible interfaces, and developer experience. Based in the Netherlands.
+      - generic [ref=e87]:
+        - generic [ref=e88]: Eyebrow
+        - generic [ref=e89]: Open to new opportunities
+      - generic [ref=e90]:
+        - generic [ref=e91]: Code
+        - code [ref=e92]: ng generate component shared/glass-card
+  - region "Components Glass Cards Glassmorphism on a rich warm background — caramel, sage, and sunset glow variants." [ref=e93]:
+    - generic [ref=e94]:
+      - generic [ref=e96]:
+        - paragraph [ref=e97]: Components
+        - heading "Glass Cards" [level=2] [ref=e98]
+        - paragraph [ref=e99]: Glassmorphism on a rich warm background — caramel, sage, and sunset glow variants.
+      - generic [ref=e100]:
+        - generic [ref=e103]:
+          - paragraph [ref=e104]: Warm Caramel
+          - heading "Glass Card" [level=3] [ref=e105]
+          - paragraph [ref=e106]: Caramel-tinted glass with soft backdrop blur. Used for project cards, experience entries.
+          - generic [ref=e107]:
+            - generic "Angular" [ref=e109]
+            - generic "SCSS" [ref=e111]
+        - generic [ref=e114]:
+          - paragraph [ref=e115]: Sage Tint
+          - heading "Glass Sage" [level=3] [ref=e116]
+          - paragraph [ref=e117]: Sage-tinted glass. Used for skill categories, active states, and feature highlights.
+          - generic [ref=e118]:
+            - generic "TypeScript" [ref=e120]
+            - generic "NX" [ref=e122]
+        - generic [ref=e125]:
+          - paragraph [ref=e126]: Sunset Glow
+          - heading "Glass Glow" [level=3] [ref=e127]
+          - paragraph [ref=e128]: Warm sunset-tinted glass. Used for featured items, CTAs, and evening atmosphere accents.
+          - generic [ref=e129]:
+            - generic "Featured" [ref=e131]
+            - generic "AI-assisted" [ref=e133]
+  - region "UI Components Buttons & Badges" [ref=e134]:
+    - generic [ref=e136]:
+      - paragraph [ref=e137]: UI Components
+      - heading "Buttons & Badges" [level=2] [ref=e138]
+    - generic [ref=e139]:
+      - generic [ref=e140]:
+        - paragraph [ref=e141]: Buttons
+        - generic [ref=e142]:
+          - button "Primary Button" [ref=e144] [cursor=pointer]
+          - button "Secondary Button" [ref=e146] [cursor=pointer]
+          - button "Tertiary Button" [ref=e148] [cursor=pointer]
+          - generic [ref=e149]:
+            - button "Disabled" [disabled]
+      - generic [ref=e150]:
+        - paragraph [ref=e151]: Badges & Tags
+        - generic [ref=e152]:
+          - generic "Sage" [ref=e154]
+          - generic "Caramel" [ref=e156]
+          - generic "Oker" [ref=e158]
+          - generic "Navy" [ref=e160]
+          - generic "Sunset" [ref=e162]
+  - region "Motion Biomorphic Blobs Organic shapes morphing infinitely. GPU-accelerated, respects prefers-reduced-motion." [ref=e163]:
+    - generic [ref=e166]:
+      - paragraph [ref=e167]: Motion
+      - heading "Biomorphic Blobs" [level=2] [ref=e168]
+      - paragraph [ref=e169]: Organic shapes morphing infinitely. GPU-accelerated, respects prefers-reduced-motion.
+  - region "Forms Form Elements Accessible inputs with caramel focus rings, warm labels, and clear error states." [ref=e174]:
+    - generic [ref=e176]:
+      - paragraph [ref=e177]: Forms
+      - heading "Form Elements" [level=2] [ref=e178]
+      - paragraph [ref=e179]: Accessible inputs with caramel focus rings, warm labels, and clear error states.
+    - generic [ref=e180]:
+      - generic [ref=e181]:
+        - generic [ref=e182]: Full Name *
+        - textbox "Full Name required" [ref=e183]:
+          - /placeholder: Wim Stienstra
+      - generic [ref=e184]:
+        - generic [ref=e185]: Email Address *
+        - textbox "Email Address required" [ref=e186]:
+          - /placeholder: wim@example.com
+        - alert [ref=e187]: Please enter a valid email address.
+      - generic [ref=e188]:
+        - generic [ref=e189]: Message
+        - textbox "Message" [ref=e190]:
+          - /placeholder: Tell me about your project...
+      - button "Send Message" [ref=e193] [cursor=pointer]
+  - region "Spacing Spacing Scale 8px base scale. Design tokens used throughout — never hardcoded values." [ref=e194]:
+    - generic [ref=e196]:
+      - paragraph [ref=e197]: Spacing
+      - heading "Spacing Scale" [level=2] [ref=e198]
+      - paragraph [ref=e199]: 8px base scale. Design tokens used throughout — never hardcoded values.
+    - generic "Spacing scale visualization" [ref=e200]:
+      - generic [ref=e201]:
+        - generic [ref=e202]: "--space-1"
+        - generic "Space 1 token" [ref=e203]
+        - generic [ref=e204]: 4px
+      - generic [ref=e205]:
+        - generic [ref=e206]: "--space-2"
+        - generic "Space 2 token" [ref=e207]
+        - generic [ref=e208]: 8px
+      - generic [ref=e209]:
+        - generic [ref=e210]: "--space-3"
+        - generic "Space 3 token" [ref=e211]
+        - generic [ref=e212]: 12px
+      - generic [ref=e213]:
+        - generic [ref=e214]: "--space-4"
+        - generic "Space 4 token" [ref=e215]
+        - generic [ref=e216]: 16px
+      - generic [ref=e217]:
+        - generic [ref=e218]: "--space-6"
+        - generic "Space 6 token" [ref=e219]
+        - generic [ref=e220]: 24px
+      - generic [ref=e221]:
+        - generic [ref=e222]: "--space-8"
+        - generic "Space 8 token" [ref=e223]
+        - generic [ref=e224]: 32px
+      - generic [ref=e225]:
+        - generic [ref=e226]: "--space-12"
+        - generic "Space 12 token" [ref=e227]
+        - generic [ref=e228]: 48px
+      - generic [ref=e229]:
+        - generic [ref=e230]: "--space-16"
+        - generic "Space 16 token" [ref=e231]
+        - generic [ref=e232]: 64px
+      - generic [ref=e233]:
+        - generic [ref=e234]: "--space-24"
+        - generic "Space 24 token" [ref=e235]
+        - generic [ref=e236]: 96px
+      - generic [ref=e237]:
+        - generic [ref=e238]: "--space-32"
+        - generic "Space 32 token" [ref=e239]
+        - generic [ref=e240]: 128px

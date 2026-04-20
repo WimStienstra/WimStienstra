@@ -1,0 +1,9 @@
+<header [class]="'section-header section-header--' + align()">
+  @if (eyebrow()) {
+  <p class="text-eyebrow" aria-hidden="false">{{ eyebrow() }}</p>
+  }
+  <h2>{{ heading() }}</h2>
+  @if (description()) {
+  <p class="section-header__desc">{{ description() }}</p>
+  }
+</header>

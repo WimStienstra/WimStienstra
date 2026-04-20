@@ -1,0 +1,93 @@
+// =============================================================================
+// BIOMORPHIC — Organic blob backgrounds, shapes, and morph animations
+// =============================================================================
+
+// Base blob element (positioned absolutely, decorative only)
+.blob-bg {
+  position: absolute;
+  border-radius: var(--radius-blob);
+  filter: blur(60px);
+  opacity: 0.35;
+  pointer-events: none;
+  will-change: border-radius, transform;
+  animation: blob-morph var(--duration-morph) ease-in-out infinite alternate;
+
+  // Warm sunset blob
+  &--sunset {
+    background: radial-gradient(circle, var(--color-sunset) 0%, var(--color-amber) 60%, transparent 100%);
+    animation-name: blob-morph-a;
+  }
+
+  // Sage blob
+  &--sage {
+    background: radial-gradient(circle, var(--color-sage-light) 0%, var(--color-sage) 60%, transparent 100%);
+    animation-name: blob-morph-b;
+    animation-delay: -4s;
+  }
+
+  // Caramel blob
+  &--caramel {
+    background: radial-gradient(circle, var(--color-caramel-light) 0%, var(--color-caramel) 60%, transparent 100%);
+    animation-name: blob-morph-c;
+    animation-delay: -8s;
+  }
+}
+
+// Blob morph keyframes — three variations for natural stagger
+@keyframes blob-morph-a {
+  0% {
+    border-radius: 64% 36% 47% 53% / 53% 39% 61% 47%;
+  }
+
+  25% {
+    border-radius: 43% 57% 72% 28% / 57% 46% 54% 43%;
+  }
+
+  50% {
+    border-radius: 71% 29% 38% 62% / 39% 65% 35% 61%;
+  }
+
+  75% {
+    border-radius: 53% 47% 60% 40% / 68% 32% 68% 32%;
+  }
+
+  100% {
+    border-radius: 64% 36% 47% 53% / 53% 39% 61% 47%;
+  }
+}
+
+@keyframes blob-morph-b {
+  0% {
+    border-radius: 43% 57% 72% 28% / 57% 46% 54% 43%;
+  }
+
+  33% {
+    border-radius: 71% 29% 38% 62% / 39% 65% 35% 61%;
+  }
+
+  66% {
+    border-radius: 53% 47% 60% 40% / 68% 32% 68% 32%;
+  }
+
+  100% {
+    border-radius: 43% 57% 72% 28% / 57% 46% 54% 43%;
+  }
+}
+
+@keyframes blob-morph-c {
+  0% {
+    border-radius: 53% 47% 60% 40% / 68% 32% 68% 32%;
+  }
+
+  40% {
+    border-radius: 64% 36% 47% 53% / 53% 39% 61% 47%;
+  }
+
+  70% {
+    border-radius: 43% 57% 72% 28% / 57% 46% 54% 43%;
+  }
+
+  100% {
+    border-radius: 53% 47% 60% 40% / 68% 32% 68% 32%;
+  }
+}
