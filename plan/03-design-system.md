@@ -12,10 +12,16 @@ This project uses a comprehensive **Biomorphic Glassmorphism** design language t
 
 ### Design Philosophy
 - **Organic Warmth:** Biomorphic shapes, warm earth palette, natural materials
-- **Functional Sophistication:** Mid-century modern precision, accessible luxury (WCAG 2.2 AA)
+- **Functional Sophistication:** Mid-century modern precision, accessible luxury (WCAG 2.2 AA), **mobile-first responsive design**
 - **Performant Fluidity:** GPU-accelerated animations, 60fps, respects `prefers-reduced-motion`
 
 **Core Aesthetic:** "What if a smart home dashboard had the warmth of a mid-century living room bathed in evening sunset light?"
+
+**Mobile-First Approach:**
+- Design for mobile viewports first (320px → 768px)
+- Progressive enhancement using `min-width` media queries
+- Touch-friendly tap targets (minimum 44×44px)
+- Optimized for mobile performance and bandwidth
 
 ---
 
@@ -104,6 +110,32 @@ This project uses a comprehensive **Biomorphic Glassmorphism** design language t
 --duration-slow:    600ms;   // Scroll reveals
 --duration-morph:   1200ms;  // Blob morphing
 ```
+
+### Tactile Haptic Feedback (Mobile-First)
+
+**Library:** [`web-haptics`](https://haptics.lochie.me/) — Haptic vibration feedback for mobile web
+
+**Installation:** `npm i web-haptics`
+
+**Usage Pattern:**
+```typescript
+import { useWebHaptics } from 'web-haptics/react';
+
+// Presets: light, medium, heavy, success, warning, error, selection, nudge
+trigger('medium');  // Standard button tap
+trigger('success'); // Form submission
+```
+
+**Haptic Mapping:**
+- **Button hover:** `light` (subtle feedback)
+- **Button press:** `medium` (standard interaction)
+- **CTA click:** `heavy` (primary actions)
+- **Form submit:** `success` (confirmation)
+- **Validation error:** `warning` (alert)
+- **Card selection:** `selection` (project/skill tap)
+- **Menu open:** `rigid` (drawer/modal)
+
+**Accessibility:** Respects `prefers-reduced-motion`, gracefully degrades on desktop
 
 ---
 

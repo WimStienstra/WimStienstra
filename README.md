@@ -52,6 +52,7 @@ The site reflects my home environment with warm earth tones, organic shapes, and
 - **Framework:** Angular 21.2.x (Standalone Components, Signals)
 - **Styling:** SCSS with design tokens (CSS variables)
 - **Animation:** GSAP 3.14.x (ScrollTrigger), @chenglou/pretext (kinetic typography)
+- **Haptic Feedback:** web-haptics (tactile mobile interactions)
 - **Loading States:** boneyard-js/angular (auto-captured skeletons)
 - **Icons:** lucide-angular (Light variant)
 - **Accessibility:** WCAG 2.2 Level AA compliant

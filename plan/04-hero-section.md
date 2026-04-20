@@ -38,6 +38,7 @@ import {
 } from '@angular/core'
 import { prepare, layout } from '@chenglou/pretext'
 import { gsap } from 'gsap'
+import { useWebHaptics } from 'web-haptics/react'
 
 const HERO_TEXT = 'FRONTEND DEVELOPER'
 const FONT = 'bold 7rem Inter'
@@ -56,6 +57,7 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
 
   private prepared: Awaited<ReturnType<typeof prepare>> | null = null
   private mouseMoveListener!: (e: MouseEvent) => void
+  private haptics = useWebHaptics()
 
   constructor(private ngZone: NgZone) {}
 
@@ -103,6 +105,14 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
     )
   }
 
+  // Haptic feedback for CTA interactions
+  onCtaClick(type: 'primary' | 'secondary'): void {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!prefersReducedMotion) {
+      this.haptics.trigger(type === 'primary' ? 'heavy' : 'medium')
+    }
+  }
+
   ngOnDestroy(): void {
     const el = this.containerRef?.nativeElement
     if (el && this.mouseMoveListener) {
@@ -129,12 +139,16 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
     <div class="divider"></div>
     <p class="tagline">Angular · Monorepo · AI-assisted development</p>
     <div class="cta">
-      <a href="#projects" class="cta-primary">View Work ↓</a>
+      <a 
+        href="#projects" 
+        class="cta-primary"
+        (pointerdown)="onCtaClick('primary')">View Work ↓</a>
       <a
         href="https://www.linkedin.com/in/wimstienstra"
         target="_blank"
         rel="noopener noreferrer"
         class="cta-secondary"
+        (pointerdown)="onCtaClick('secondary')"
       >LinkedIn ↗</a>
     </div>
   </div>

@@ -36,6 +36,7 @@ Build the final section of the page as an Angular 21 standalone component: a con
 import { Component, AfterViewInit } from '@angular/core'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useWebHaptics } from 'web-haptics/react'
 import meta from '../../../content/meta.json'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -56,6 +57,7 @@ interface ContactLink {
 export class ContactComponent implements AfterViewInit {
   readonly meta = meta
   readonly year = new Date().getFullYear()
+  private haptics = useWebHaptics()
 
   readonly links: ContactLink[] = [
     {
@@ -89,6 +91,14 @@ export class ContactComponent implements AfterViewInit {
         gsap.fromTo('.contact-footer',   { opacity: 0 }, { opacity: 1, duration: 0.6, delay: 0.6 })
       }
     })
+  }
+
+  // Haptic feedback for contact link interactions (mobile)
+  onContactLinkClick(type: 'email' | 'social'): void {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!prefersReducedMotion) {
+      this.haptics.trigger(type === 'email' ? 'heavy' : 'medium')
+    }
   }
 }
 ```

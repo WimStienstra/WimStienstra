@@ -17,7 +17,7 @@ A design language that **feels like Wim's home**: warm earth tones (caramel, sag
 
 1. **Organic Warmth** – Biomorphic shapes (rounded blobs, flowing curves), warm earth palette (not cold tech), natural materials (wood textures, plant greens), soft shadows (not harsh geometry).
 
-2. **Functional Sophistication** – Mid-century modern precision (clean lines, purposeful spacing), locally-hosted tech vibes (smart home control panels, dashboard aesthetics), accessible luxury (WCAG 2.2 AA, keyboard-first).
+2. **Functional Sophistication** – Mid-century modern precision (clean lines, purposeful spacing), locally-hosted tech vibes (smart home control panels, dashboard aesthetics), accessible luxury (WCAG 2.2 AA, keyboard-first), **mobile-first responsive design** (progressive enhancement from mobile → tablet → desktop).
 
 3. **Performant Fluidity** – Smooth organic animations (blob morphing, fluid transitions), GPU-accelerated, 60fps, respects `prefers-reduced-motion`.
 
@@ -527,6 +527,78 @@ gsap.from('.section-content', {
   .blob-bg {
     animation: none !important;
   }
+}
+```
+
+---
+
+## Tactile Feedback (Mobile-First Haptic Interactions)
+
+**Library:** [web-haptics](https://haptics.lochie.me/) — Haptic vibration feedback for mobile web, making the "home feel" of the website more immersive and tactile.
+
+### Haptic Patterns (Mobile Touch Interactions)
+
+```typescript
+import { useWebHaptics } from 'web-haptics/react';
+
+const { trigger } = useWebHaptics();
+
+// Presets for common interactions
+trigger('light');      // Subtle tap feedback (button hover)
+trigger('medium');     // Standard tap feedback (button press)
+trigger('heavy');      // Prominent feedback (CTA click, form submit)
+trigger('success');    // Confirmation (successful form submission)
+trigger('warning');    // Alert (validation error)
+trigger('error');      // Strong alert (critical error)
+trigger('selection');  // Item selection (project card tap)
+```
+
+### Recommended Haptic Mapping
+
+| Interaction | Haptic Pattern | Use Case |
+|-------------|----------------|----------|
+| **Button hover** | `light` | Glassmorphic card hover, link hover (mobile only) |
+| **Button press** | `medium` | Standard button click, navigation tap |
+| **CTA click** | `heavy` | Primary action buttons ("Explore my work", "Contact me") |
+| **Form submit** | `success` | Successful contact form submission |
+| **Validation error** | `warning` | Invalid form input |
+| **Project card tap** | `selection` | Selecting a project card, skill tag |
+| **Section scroll** | `nudge` | Scroll-triggered reveals (subtle) |
+| **Menu open** | `rigid` | Opening mobile navigation menu |
+
+### Implementation Example
+
+```typescript
+// Button with haptic feedback
+<button 
+  class="btn-primary"
+  (click)="handleClick()"
+  (pointerdown)="trigger('medium')">
+  Explore my work
+</button>
+
+// Glass card with selection haptic
+<article 
+  class="glass-card card-project"
+  (click)="selectProject()"
+  (pointerdown)="trigger('selection')">
+  <!-- Project content -->
+</article>
+```
+
+### Accessibility Considerations
+
+- **Respect `prefers-reduced-motion`:** Disable haptics if user prefers reduced motion
+- **Mobile-only:** Haptics only work on mobile devices with vibration API support
+- **Optional:** Users can disable haptics in browser settings
+- **Fallback:** Gracefully degrades on desktop/unsupported devices
+
+```typescript
+// Respect prefers-reduced-motion
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (!prefersReducedMotion) {
+  trigger('medium');
 }
 ```
 

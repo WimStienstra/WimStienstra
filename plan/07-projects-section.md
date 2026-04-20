@@ -41,6 +41,7 @@ More Projects ↓
 import { Component, AfterViewInit, ElementRef, QueryList, ViewChildren } from '@angular/core'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useWebHaptics } from 'web-haptics/react'
 import projectsData from '../../../content/projects.json'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -69,6 +70,8 @@ export class ProjectsComponent implements AfterViewInit {
 
   @ViewChildren('card') cardRefs!: QueryList<ElementRef>
 
+  private haptics = useWebHaptics()
+
   ngAfterViewInit(): void {
     const cards = this.cardRefs.map(r => r.nativeElement)
     gsap.fromTo(
@@ -92,6 +95,14 @@ export class ProjectsComponent implements AfterViewInit {
         gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6 })
       })
     })
+  }
+
+  // Haptic feedback for project card tap (mobile)
+  onProjectSelect(): void {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!prefersReducedMotion) {
+      this.haptics.trigger('selection')
+    }
   }
 }
 ```
