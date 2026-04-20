@@ -14,6 +14,39 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   font-size: 100%;
+
+  // Sunset lamp scrollbar — Firefox
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-sunset) var(--color-bg-canvas);
+}
+
+// Sunset lamp scrollbar — Chromium
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-canvas);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    var(--color-sunset)   0%,
+    var(--color-oker)     50%,
+    var(--color-caramel)  100%
+  );
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--color-bg-canvas);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    #ff6b1a               0%,
+    var(--color-oker-dark) 50%,
+    var(--color-caramel-dark) 100%
+  );
 }
 
 body {

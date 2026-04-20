@@ -2,8 +2,7 @@
 
 [![wakatime](https://wakatime.com/badge/user/48ef114e-a11a-4982-9d6d-440b3cb337c1.svg)](https://wakatime.com/@48ef114e-a11a-4982-9d6d-440b3cb337c1)
 
-
- ```                                              
+```                                              
   _____            ____      ______  _______   
  |\    \   _____  |    |    |      \/       \  
  | |    | /    /| |    |   /          /\     \ 
@@ -18,57 +17,28 @@
      '      )/       '       '          '      
             '                                  
 ```
-<!--
-**WimStienstra/WimStienstra** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
-Here are some ideas to get you started:
+## Frontend developer from Leeuwarden, Netherlands 🌿
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
-## 🏡 Personal Portfolio Website
+I build scalable, accessible frontends where engineering and UX work in harmony. Currently at the **CJIB** (Centraal Justitieel Incassobureau), where I'm part of a forward-thinking team building **EXPO** — an Angular monorepo platform that unifies multiple applications under one roof.
 
-This repository contains my personal portfolio website built with **Angular 21+** and a custom **Biomorphic Glassmorphism** design language.
+Before that, I modernised a legacy case-processing application at the same organisation: upgraded Angular 14 → 20, migrated to an NX monorepo, rewrote the test suite from Cucumber/Karma to Playwright/Jest, and touched the Java backend along the way.
 
-### 🎨 Design Language
+I care about **architecture, structure, and intentional craft** — whether that's designing a domain-driven monorepo or making sure a component is keyboard-navigable.
 
-The site reflects my home environment with warm earth tones, organic shapes, and mid-century modern aesthetics:
+---
 
-- **Color Palette:** Sage green (#8a9a8d), Caramel (#c19a6b), Oker (#d4a54a), Navy (#2d3e50)
-- **Style:** Glassmorphic cards with warm-tinted overlays and biomorphic blob shapes
-- **Typography:** DM Sans/Outfit (display), Inter (body), JetBrains Mono (code)
-- **Animations:** Organic blob morphing, GSAP ScrollTrigger parallax, fluid transitions
+### What I work with
 
-> **📋 Complete Design Documentation:** See [DESIGN.md](./DESIGN.md) for the full design language specification
+- **Angular** (monorepo, signals, standalone components) — my primary craft
+- **TypeScript**, **NX**, **RxJS**
+- **Playwright** for E2E, **Vitest/Jest** for unit tests
+- AI-assisted development — not as a shortcut, but as a tool that rewards skill
 
-### 🛠️ Tech Stack
+---
 
-- **Framework:** Angular 21.2.x (Standalone Components, Signals)
-- **Styling:** SCSS with design tokens (CSS variables)
-- **Animation:** GSAP 3.14.x (ScrollTrigger), @chenglou/pretext (kinetic typography)
-- **Haptic Feedback:** web-haptics (tactile mobile interactions)
-- **Loading States:** boneyard-js/angular (auto-captured skeletons)
-- **Icons:** lucide-angular (Light variant)
-- **Accessibility:** WCAG 2.2 Level AA compliant
-- **Deployment:** Static hosting → wimstienstra.nl
+### 🌐 See more
 
-### 📂 Project Structure
+> Curious? Head over to **[wimstienstra.nl](https://wimstienstra.nl)** for the full picture — work, projects, and a bit about who I am outside of code.
 
-```
-plan/                    ← Implementation plan documents
-src/
-├── styles/             ← Global SCSS (tokens, glassmorphism, biomorphic patterns)
-├── app/components/     ← Angular standalone components
-└── content/            ← JSON content files
-DESIGN.md               ← Design language specification
-```
-
-### 🚀 Development
-
-See the [plan/](./plan/) folder for detailed implementation steps and specifications.
+📫 [LinkedIn](https://www.linkedin.com/in/wimstienstra) · [w.j.stienstra@hotmail.com](mailto:w.j.stienstra@hotmail.com)
